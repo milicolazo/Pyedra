@@ -1,0 +1,38 @@
+action: GLOB, msg: packaging
+cwd: /home/usuario/Escritorio/Doctorado/Materias/Python/Proyecto/Pyedra
+cmd: /home/usuario/anaconda3/bin/python setup.py sdist --formats=zip --dist-dir .tox/dist
+running sdist
+running egg_info
+writing Pyedra.egg-info/PKG-INFO
+writing dependency_links to Pyedra.egg-info/dependency_links.txt
+writing requirements to Pyedra.egg-info/requires.txt
+writing top-level names to Pyedra.egg-info/top_level.txt
+reading manifest file 'Pyedra.egg-info/SOURCES.txt'
+writing manifest file 'Pyedra.egg-info/SOURCES.txt'
+running check
+creating Pyedra-0.0.1
+creating Pyedra-0.0.1/Pyedra.egg-info
+copying files to Pyedra-0.0.1...
+copying README.txt -> Pyedra-0.0.1
+copying ez_setup.py -> Pyedra-0.0.1
+copying pyedra.py -> Pyedra-0.0.1
+copying setup.py -> Pyedra-0.0.1
+copying Pyedra.egg-info/PKG-INFO -> Pyedra-0.0.1/Pyedra.egg-info
+copying Pyedra.egg-info/SOURCES.txt -> Pyedra-0.0.1/Pyedra.egg-info
+copying Pyedra.egg-info/dependency_links.txt -> Pyedra-0.0.1/Pyedra.egg-info
+copying Pyedra.egg-info/requires.txt -> Pyedra-0.0.1/Pyedra.egg-info
+copying Pyedra.egg-info/top_level.txt -> Pyedra-0.0.1/Pyedra.egg-info
+Writing Pyedra-0.0.1/setup.cfg
+creating '.tox/dist/Pyedra-0.0.1.zip' and adding 'Pyedra-0.0.1' to it
+adding 'Pyedra-0.0.1/setup.cfg'
+adding 'Pyedra-0.0.1/README.txt'
+adding 'Pyedra-0.0.1/ez_setup.py'
+adding 'Pyedra-0.0.1/pyedra.py'
+adding 'Pyedra-0.0.1/PKG-INFO'
+adding 'Pyedra-0.0.1/setup.py'
+adding 'Pyedra-0.0.1/Pyedra.egg-info/requires.txt'
+adding 'Pyedra-0.0.1/Pyedra.egg-info/SOURCES.txt'
+adding 'Pyedra-0.0.1/Pyedra.egg-info/top_level.txt'
+adding 'Pyedra-0.0.1/Pyedra.egg-info/PKG-INFO'
+adding 'Pyedra-0.0.1/Pyedra.egg-info/dependency_links.txt'
+removing 'Pyedra-0.0.1' (and everything under it)

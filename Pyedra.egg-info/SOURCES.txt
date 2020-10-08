@@ -1,0 +1,9 @@
+README.txt
+ez_setup.py
+pyedra.py
+setup.py
+Pyedra.egg-info/PKG-INFO
+Pyedra.egg-info/SOURCES.txt
+Pyedra.egg-info/dependency_links.txt
+Pyedra.egg-info/requires.txt
+Pyedra.egg-info/top_level.txt
