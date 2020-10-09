@@ -1,0 +1,4 @@
+cat .gitignore
+*.txt
+*.dat
+*.csv
