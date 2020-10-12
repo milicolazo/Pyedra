@@ -109,7 +109,7 @@ def HG1G2_fit(df):
         # Filtrar un solo asteroide
         data = df[df["nro"] == nro]
 
-        bases = pd.read_csv("Penttila.csv")
+        bases = pd.read_csv('Penttila.csv')
 
         alfa = bases["alfa"].to_numpy()
         phi1 = bases["phi1"].to_numpy()

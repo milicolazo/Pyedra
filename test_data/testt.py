@@ -3,7 +3,6 @@ import scipy
 import scipy.interpolate
 import pandas as pd
 import scipy.optimize as optimization
-import datatest as dt
 
 def HG_fit(df):
     """Fit (H,G) system to data from table"""
@@ -159,13 +158,13 @@ def HG1G2_fit(df):
 
         print(H_1_2, G_1, G_2, r_squared)
 
-def df():
-    return pd.read_csv('prueba3.csv')
-
-def test_columns(df):
-    dt.validate(
-        df.columns,
-        {'Asteroid', 'H', 'error H', 'G', 'error G', 'R'})
+df=pd.read_csv('prueba3.csv')
+def test_HG():
+    result=HG_fit(df)
+    for nro in df.nro
+        assert result.Asteroid==nro
+    
+    
 
 """if __name__ == "__main__":
     print("H-G")
