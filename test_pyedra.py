@@ -5,7 +5,18 @@ import numpy as np
 
 @pytest.fixture(scope="session")
 def dataset_3():
+<<<<<<< HEAD
     return pd.read_csv('test_data/testdata_ground.csv')
+=======
+    return pd.read_csv('test_data/prueba3.csv')
+
+
+def test_HG_fit(dataset_3):
+    df = dataset_3
+    noob = df.drop_duplicates(subset="nro", keep="first", inplace=False)
+    result = pyedra.HG_fit(df)
+    np.testing.assert_array_equal(noob.nro, result.Asteroid)
+>>>>>>> 90089f97fc19d5264a88901416606c856f3aabf6
     
 c = pd.read_csv('test_data/testdata_carbognani.csv')
 
