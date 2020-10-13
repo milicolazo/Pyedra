@@ -42,8 +42,8 @@ def HG_fit(df):
         H = -2.5 * np.log10(a + b)
         error_H = 1.0857362 * np.sqrt(error_a ** 2 + error_b ** 2) / (a + b)
         G = b / (a + b)
-        error_G = (
-            np.sqrt((b * error_a) ** 2 + (a * error_b) ** 2) / (a + b) ** 2
+        error_G = np.sqrt((b * error_a) ** 2 + (a * error_b) ** 2) / (
+            (a + b) ** 2
         )
 
         # Pa decidir el mejor ajuste
@@ -51,6 +51,7 @@ def HG_fit(df):
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
+
         nro_column[idx] = nro
         H_column[idx] = H
         error_H_column[idx] = error_H
@@ -58,16 +59,16 @@ def HG_fit(df):
         error_G_column[idx] = error_G
         R_column[idx] = r_squared
 
-    # aca fuera del for tenes todas las columnas listas y podes
-    # crear tu dataframe resultado
-    model_df = pd.DataFrame({
-        "Asteroid": nro_column,
-        "H": H_column,
-        "error_H": error_H_column,
-        "G": G_column,
-        "error_G": error_G,
-        "R": R_column
-    })
+    model_df = pd.DataFrame(
+        {
+            "Asteroid": nro_column,
+            "H": H_column,
+            "error_H": error_H_column,
+            "G": G_column,
+            "error_G": error_G_column,
+            "R": R_column,
+        }
+    )
 
     return model_df
 
@@ -103,13 +104,22 @@ def Shev_fit(df):
 def HG1G2_fit(df):
     """Fit (H,G1,G2) system to data from table"""
     noob = df.drop_duplicates(subset="nro", keep="first", inplace=False)
+    size = len(noob)
+    nro_column = np.empty(size, dtype=int)
+    H_1_2_column = np.empty(size)
+    error_H_1_2_column = np.empty(size)
+    G_1_column = np.empty(size)
+    error_G_1_column = np.empty(size)
+    G_2_column = np.empty(size)
+    error_G_2_column = np.empty(size)
+    R_column = np.empty(size)
 
-    for nro in noob.nro:
+    for idx, nro in enumerate(noob.nro):
 
         # Filtrar un solo asteroide
         data = df[df["nro"] == nro]
 
-        bases = pd.read_csv('Penttila.csv')
+        bases = pd.read_csv("test_data/Penttila.csv")
 
         alfa = bases["alfa"].to_numpy()
         phi1 = bases["phi1"].to_numpy()
@@ -142,14 +152,28 @@ def HG1G2_fit(df):
         v = data["v"].to_numpy()
         v_fit = 10 ** (-0.4 * v)
 
-        op = optimization.curve_fit(func, (fi1, fi2, fi3), v_fit)[0]
+        op, cov = optimization.curve_fit(func, (fi1, fi2, fi3), v_fit)
         a = op[0]
         b = op[1]
         c = op[2]
+        error_a = np.sqrt(np.diag(cov)[0])
+        error_b = np.sqrt(np.diag(cov)[1])
+        error_c = np.sqrt(np.diag(cov)[2])
 
         H_1_2 = -2.5 * np.log10(a + b + c)
+        error_H_1_2 = (
+            1.0857362
+            * np.sqrt(error_a ** 2 + error_b ** 2 + error_c ** 2)
+            / (a + b + c)
+        )
         G_1 = a / (a + b + c)
+        error_G_1 = np.sqrt(
+            ((b + c) * error_a) ** 2 + (a * error_b) ** 2 + (a * error_c) ** 2
+        ) / ((a + b + c) ** 2)
         G_2 = b / (a + b + c)
+        error_G_2 = np.sqrt(
+            (b * error_a) ** 2 + ((a + c) * error_b) ** 2 + (b * error_c) ** 2
+        ) / ((a + b + c) ** 2)
 
         # Pa decidir el mejor ajuste
         residuals = v_fit - func((fi1, fi2, fi3), *op)
@@ -157,24 +181,39 @@ def HG1G2_fit(df):
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
 
-        print(H_1_2, G_1, G_2, r_squared)
+        nro_column[idx] = nro
+        H_1_2_column[idx] = H_1_2
+        error_H_1_2_column[idx] = error_H_1_2
+        G_1_column[idx] = G_1
+        error_G_1_column[idx] = error_G_1
+        G_2_column[idx] = G_2
+        error_G_2_column[idx] = error_G_2
+        R_column[idx] = r_squared
 
+    model_df = pd.DataFrame(
+        {
+            "Asteroid": nro_column,
+            "H12": H_1_2_column,
+            "error_H12": error_H_1_2_column,
+            "G1": G_1_column,
+            "error_G1": error_G_1_column,
+            "G2": G_2_column,
+            "error_G2": error_G_2_column,
+            "R": R_column,
+        }
+    )
 
-def test_HG_fit():
-    df = pd.reaad_csv('prueba3.csv')
-    result = HG_fit(df)
-    for nro in result.nro:
-        assert result.nro == nro
+    return model_df
 
 
 """if __name__ == "__main__":
-    print("H-G")
-    df=pd.read_csv('prueba3.csv')
-    print(HG_fit(df))
-    print('----------------------------')
-    print("H-G1-G2")
-    HG1G2_fit("prueba3.csv")
-    print('----------------------------')
-    print("Shevchenko model")
-    Shev_fit("prueba3.csv")
-    print('----------------------------')"""
+    #print("H-G")
+    df=pd.read_csv('test_data/testdata_ground.csv')
+    #print(HG_fit(df))
+    #print('----------------------------')
+    #print("H-G1-G2")
+    print(HG1G2_fit(df))
+    #print('----------------------------')
+    #print("Shevchenko model")
+    #Shev_fit("test_data/testdata_ground.csv")
+    #print('----------------------------')"""
