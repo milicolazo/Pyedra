@@ -76,9 +76,18 @@ def HG_fit(df):
 def Shev_fit(df):
     """Fit Shevchenko system to data from table"""
     noob = df.drop_duplicates(subset="nro", keep="first", inplace=False)
+    size = len(noob)
+    nro_column = np.empty(size, dtype=int)
+    V_lin_column = np.empty(size)
+    error_V_lin_column = np.empty(size)
+    b_column = np.empty(size)
+    error_b_column = np.empty(size)
+    c_column = np.empty(size)
+    error_c_column = np.empty(size)
+    R_column = np.empty(size)
 
-    for nro in noob.nro:
-        2.5 / (np.log(10))
+    for idx, nro in enumerate(noob.nro):
+
         # Filtrar un solo asteroide
         data = df[df["nro"] == nro]
 
@@ -88,17 +97,43 @@ def Shev_fit(df):
         def func(x, V_lin, b, c):
             return V_lin + c * x - b / (1 + x)
 
-        op = optimization.curve_fit(func, alfa_list, V_list)[0]
+        op, cov = optimization.curve_fit(func, alfa_list, V_list)
         V_lin = op[0]
         b = op[1]
         c = op[2]
+        error_V_lin = np.sqrt(np.diag(cov)[0])
+        error_b = np.sqrt(np.diag(cov)[1])
+        error_c = np.sqrt(np.diag(cov)[2])
 
         # Pa decidir el mejor ajuste
         residuals = V_list - func(alfa_list, *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((V_list - np.mean(V_list)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
-        print(V_lin, b, c, r_squared)
+
+        nro_column[idx] = nro
+        V_lin_column[idx] = V_lin
+        error_V_lin_column[idx] = error_V_lin
+        b_column[idx] = b
+        error_b_column[idx] = error_b
+        c_column[idx] = c
+        error_c_column[idx] = error_c
+        R_column[idx] = r_squared
+
+    model_df = pd.DataFrame(
+        {
+            "Asteroid": nro_column,
+            "V_lin": V_lin_column,
+            "error_V_lin": error_V_lin_column,
+            "b": b_column,
+            "error_b": error_b_column,
+            "c": c_column,
+            "error_c": error_c_column,
+            "R": R_column,
+        }
+    )
+
+    return model_df
 
 
 def HG1G2_fit(df):
@@ -212,8 +247,8 @@ def HG1G2_fit(df):
     #print(HG_fit(df))
     #print('----------------------------')
     #print("H-G1-G2")
-    print(HG1G2_fit(df))
+    #print(HG1G2_fit(df))
     #print('----------------------------')
     #print("Shevchenko model")
-    #Shev_fit("test_data/testdata_ground.csv")
+    print(Shev_fit(df))
     #print('----------------------------')"""
