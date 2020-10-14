@@ -249,8 +249,8 @@ def HG1G2_fit(df):
     #print(HG_fit(df))
     #print('----------------------------')
     #print("H-G1-G2")
-    #print(HG1G2_fit(df))
+    print(HG1G2_fit(df))
     #print('----------------------------')
     #print("Shevchenko model")
-    print(Shev_fit(df))
+    #print(Shev_fit(df))
     #print('----------------------------')"""
