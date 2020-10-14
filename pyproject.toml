@@ -1,0 +1,30 @@
+[project]
+name = "Pyedra"
+version = "0.0.1"
+description = "Implementation of phase function for asteroids in Python"
+readme = "README.txt"
+requires-python = ">=3.8"
+license = {file = "LICENSE.txt"}
+keywords = ["asteroids", "phase function", "astronomy"]
+authors = [
+  {email = "milirita.colazovinovo@gmail.com"},
+  {name = "Milagros Colazo"}
+]
+maintainers = [
+  {name = "Milagros Colazo", email = "milirita.colazovinovo@gmail.com"}
+]
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Programming Language :: Python"
+]
+
+
+[project.optional-dependencies]
+test = [
+  "pytest < 5.0.0",
+  "pytest-cov[all]"
+]
+
+[tool.black]
+line-length = 79
+target-version = ['py38']
