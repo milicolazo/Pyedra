@@ -1,7 +1,9 @@
 import numpy as np
+
+import pandas as pd
+
 import scipy
 import scipy.interpolate
-import pandas as pd
 import scipy.optimize as optimization
 
 
