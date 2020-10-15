@@ -9,11 +9,19 @@ import pytest
 
 @pytest.fixture(scope="session")
 def data():
+    """Carbognani, A., Cellino, A., & Caminiti, S. (2019). New phase-magnitude
+    curves for some main belt asteroids, fit of different photometric systems
+    and calibration of the albedo-Photometry relation. Planetary and Space
+    Science, 169, 15-34."""
     return pd.read_csv("test_data/testdata_carbognani2019.csv")
 
 
 @pytest.fixture(scope="session")
 def carbognani2019():
+    """Carbognani, A., Cellino, A., & Caminiti, S. (2019). New phase-magnitude
+    curves for some main belt asteroids, fit of different photometric systems
+    and calibration of the albedo-Photometry relation. Planetary and Space
+    Science, 169, 15-34."""
     return pd.read_csv("test_data/carbognani2019.csv")
 
 
