@@ -1,1 +1,23 @@
-python sudo: true install: - pip install tox script: - tox -r matrix: include: - python: 3.8 env: TOXENV=style dist: xenial sudo: true - python: 3.8 env: TOXENV=coverage dist: xenial sudo: true - python: 3.8 env: TOXENV=py38 dist: xenial sudo: true
+language: python
+sudo: true
+
+install: 
+    - pip install tox 
+
+script: 
+    - tox -r 
+    
+matrix: 
+    include: 
+        - python: 3.8 
+          env: TOXENV=style 
+          dist: xenial 
+          sudo: true 
+        - python: 3.8 
+          env: TOXENV=coverage 
+          dist: xenial 
+          sudo: true 
+        - python: 3.8 
+          env: TOXENV=py38 
+          dist: xenial 
+          sudo: true
