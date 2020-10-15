@@ -11,7 +11,7 @@ setup(
     name="Pyedra",
     version=VERSION,
     description="Implementation of phase function for asteroids in Python",
-    long_description=open("README.txt").read(),
+    long_description=open("README.md").read(),
     author="Milagros Colazo",
     author_email="milirita.colazovinovo@gmail.com",
     url="https://github.com/milicolazo/Pyedra",
