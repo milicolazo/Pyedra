@@ -1,7 +1,7 @@
 # Datasets
 
 ## `penttila2016.csv`
-> A Penttilä,  V. G. Shevchenko, O. Wilkman, &K. Muinonen (2016). H,G1, G2 photometric phase function extended
+> A Penttilä,  V. G. Shevchenko, O. Wilkman, & K. Muinonen (2016). H,G1, G2 photometric phase function extended
 > to low-accuracy data. 123:117–125.
 
 ##  `inputdata_carbognani2019.csv`
