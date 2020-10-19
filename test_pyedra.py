@@ -26,23 +26,23 @@ def results():
 
 
 def test_HG_fit(input_data, results):
-    noob = input_data.drop_duplicates(subset="nro", keep="first", inplace=False)
+    noob = input_data.drop_duplicates(
+        subset="nro", keep="first", inplace=False
+    )
     result = pyedra.HG_fit(input_data)
 
     np.testing.assert_array_equal(noob.nro, result.Asteroid)
 
     for idx, error in enumerate(result.error_H):
-        np.testing.assert_allclose(
-            results.H[idx], result.H[idx], atol=error
-        )
+        np.testing.assert_allclose(results.H[idx], result.H[idx], atol=error)
     for idx, error in enumerate(result.error_G):
-        np.testing.assert_allclose(
-            results.G[idx], result.G[idx], atol=error
-        )
+        np.testing.assert_allclose(results.G[idx], result.G[idx], atol=error)
 
 
 def test_HG1G2_fit(input_data, results):
-    noob = input_data.drop_duplicates(subset="nro", keep="first", inplace=False)
+    noob = input_data.drop_duplicates(
+        subset="nro", keep="first", inplace=False
+    )
     result = pyedra.HG1G2_fit(input_data)
 
     np.testing.assert_array_equal(noob.nro, result.Asteroid)
@@ -52,17 +52,15 @@ def test_HG1G2_fit(input_data, results):
             results.H12[idx], result.H12[idx], atol=error
         )
     for idx, error in enumerate(result.error_G1):
-        np.testing.assert_allclose(
-            results.G1[idx], result.G1[idx], atol=error
-        )
+        np.testing.assert_allclose(results.G1[idx], result.G1[idx], atol=error)
     for idx, error in enumerate(result.error_G2):
-        np.testing.assert_allclose(
-            results.G2[idx], result.G2[idx], atol=error
-        )
+        np.testing.assert_allclose(results.G2[idx], result.G2[idx], atol=error)
 
 
 def test_Shev_fit(input_data, results):
-    noob = input_data.drop_duplicates(subset="nro", keep="first", inplace=False)
+    noob = input_data.drop_duplicates(
+        subset="nro", keep="first", inplace=False
+    )
     result = pyedra.Shev_fit(input_data)
 
     np.testing.assert_array_equal(noob.nro, result.Asteroid)
@@ -72,10 +70,6 @@ def test_Shev_fit(input_data, results):
             results.V_lin[idx], result.V_lin[idx], atol=error
         )
     for idx, error in enumerate(result.error_b):
-        np.testing.assert_allclose(
-            results.b[idx], result.b[idx], atol=error
-        )
+        np.testing.assert_allclose(results.b[idx], result.b[idx], atol=error)
     for idx, error in enumerate(result.error_c):
-        np.testing.assert_allclose(
-            results.c[idx], result.c[idx], atol=error
-        )
+        np.testing.assert_allclose(results.c[idx], result.c[idx], atol=error)
