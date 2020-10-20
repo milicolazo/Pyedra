@@ -28,7 +28,7 @@ def test_HG_fit(input_data):
 
     expected = pd.DataFrame(
         {
-            "nro": {0: 85, 1: 208, 2: 236, 3: 306, 4: 313, 5: 338, 6: 522},
+            "id": {0: 85, 1: 208, 2: 236, 3: 306, 4: 313, 5: 338, 6: 522},
             "H": {0: 7.52, 1: 9.2, 2: 8.0, 3: 8.79, 4: 8.87, 5: 8.51, 6: 9.0},
             "G": {
                 0: 0.0753,
@@ -43,8 +43,8 @@ def test_HG_fit(input_data):
     )
 
     for idx, e_row in expected.iterrows():
-        r_row = result[result.Asteroid == e_row.nro].iloc[0]
-        np.testing.assert_array_equal(r_row.Asteroid, e_row.nro)
+        r_row = result[result.id == e_row.id].iloc[0]
+        np.testing.assert_array_equal(r_row.id, e_row.id)
         np.testing.assert_allclose(r_row.H, e_row.H, atol=r_row.error_H)
         np.testing.assert_allclose(r_row.G, e_row.G, atol=r_row.error_G)
 
@@ -55,7 +55,7 @@ def test_HG1G2_fit(input_data):
 
     expected = pd.DataFrame(
         {
-            "nro": {0: 85, 1: 208, 2: 236, 3: 306, 4: 313, 5: 338, 6: 522},
+            "id": {0: 85, 1: 208, 2: 236, 3: 306, 4: 313, 5: 338, 6: 522},
             "H12": {
                 0: 7.41,
                 1: 8.92,
@@ -87,8 +87,8 @@ def test_HG1G2_fit(input_data):
     )
 
     for idx, e_row in expected.iterrows():
-        r_row = result[result.Asteroid == e_row.nro].iloc[0]
-        np.testing.assert_array_equal(r_row.Asteroid, e_row.nro)
+        r_row = result[result.id == e_row.id].iloc[0]
+        np.testing.assert_array_equal(r_row.id, e_row.id)
         np.testing.assert_allclose(r_row.H12, e_row.H12, atol=r_row.error_H12)
         np.testing.assert_allclose(r_row.G1, e_row.G1, atol=r_row.error_G1)
         np.testing.assert_allclose(r_row.G2, e_row.G2, atol=r_row.error_G2)
@@ -100,7 +100,7 @@ def test_Shev_fit(input_data):
 
     expected = pd.DataFrame(
         {
-            "nro": {0: 85, 1: 208, 2: 236, 3: 306, 4: 313, 5: 338, 6: 522},
+            "id": {0: 85, 1: 208, 2: 236, 3: 306, 4: 313, 5: 338, 6: 522},
             "V_lin": {
                 0: 7.96,
                 1: 9.74,
@@ -132,8 +132,8 @@ def test_Shev_fit(input_data):
     )
 
     for idx, e_row in expected.iterrows():
-        r_row = result[result.Asteroid == e_row.nro].iloc[0]
-        np.testing.assert_array_equal(r_row.Asteroid, e_row.nro)
+        r_row = result[result.id == e_row.id].iloc[0]
+        np.testing.assert_array_equal(r_row.id, e_row.id)
         np.testing.assert_allclose(
             r_row.V_lin, e_row.V_lin, atol=r_row.error_V_lin
         )
