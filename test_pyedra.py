@@ -22,63 +22,123 @@ def input_data():
     curves for some main belt asteroids, fit of different photometric systems
     and calibration of the albedo-Photometry relation. Planetary and Space
     Science, 169, 15-34."""
-    return pd.read_csv("data/inputdata_carbognani2019.csv")
+    return pd.read_csv("data/carbognani2019.csv")
 
 
-@pytest.fixture(scope="session")
-def results():
-    """Carbognani, A., Cellino, A., & Caminiti, S. (2019). New phase-magnitude
-    curves for some main belt asteroids, fit of different photometric systems
-    and calibration of the albedo-Photometry relation. Planetary and Space
-    Science, 169, 15-34."""
-    return pd.read_csv("data/results_carbognani2019.csv")
+def test_HG_fit(input_data):
 
-
-def test_HG_fit(input_data, results):
-    noob = input_data.drop_duplicates(
-        subset="nro", keep="first", inplace=False
-    )
     result = pyedra.HG_fit(input_data)
 
-    np.testing.assert_array_equal(noob.nro, result.Asteroid)
-
-    for idx, error in enumerate(result.error_H):
-        np.testing.assert_allclose(results.H[idx], result.H[idx], atol=error)
-    for idx, error in enumerate(result.error_G):
-        np.testing.assert_allclose(results.G[idx], result.G[idx], atol=error)
-
-
-def test_HG1G2_fit(input_data, results):
-    noob = input_data.drop_duplicates(
-        subset="nro", keep="first", inplace=False
+    expected = pd.DataFrame(
+        {
+            "nro": {0: 85, 1: 208, 2: 236, 3: 306, 4: 313, 5: 338, 6: 522},
+            "H": {0: 7.52, 1: 9.2, 2: 8.0, 3: 8.79, 4: 8.87, 5: 8.51, 6: 9.0},
+            "G": {
+                0: 0.0753,
+                1: 0.2761,
+                2: 0.0715,
+                3: 0.2891,
+                4: 0.1954,
+                5: -0.0812,
+                6: 0.1411,
+            },
+        }
     )
+
+    for idx, e_row in expected.iterrows():
+        r_row = result[result.Asteroid == e_row.nro].iloc[0]
+        np.testing.assert_array_equal(r_row.Asteroid, e_row.nro)
+        np.testing.assert_allclose(r_row.H, e_row.H, atol=r_row.error_H)
+        np.testing.assert_allclose(r_row.G, e_row.G, atol=r_row.error_G)
+
+
+def test_HG1G2_fit(input_data):
+
     result = pyedra.HG1G2_fit(input_data)
 
-    np.testing.assert_array_equal(noob.nro, result.Asteroid)
-
-    for idx, error in enumerate(result.error_H12):
-        np.testing.assert_allclose(
-            results.H12[idx], result.H12[idx], atol=error
-        )
-    for idx, error in enumerate(result.error_G1):
-        np.testing.assert_allclose(results.G1[idx], result.G1[idx], atol=error)
-    for idx, error in enumerate(result.error_G2):
-        np.testing.assert_allclose(results.G2[idx], result.G2[idx], atol=error)
-
-
-def test_Shev_fit(input_data, results):
-    noob = input_data.drop_duplicates(
-        subset="nro", keep="first", inplace=False
+    expected = pd.DataFrame(
+        {
+            "nro": {0: 85, 1: 208, 2: 236, 3: 306, 4: 313, 5: 338, 6: 522},
+            "H12": {
+                0: 7.41,
+                1: 8.92,
+                2: 7.82,
+                3: 8.04,
+                4: 8.88,
+                5: 8.41,
+                6: 9.07,
+            },
+            "G1": {
+                0: 0.3358,
+                1: -0.3116,
+                2: 0.1155,
+                3: -0.1309,
+                4: 0.624,
+                5: 0.5607,
+                6: 0.7302,
+            },
+            "G2": {
+                0: 0.2147,
+                1: 0.6598,
+                2: 0.3436,
+                3: 0.3624,
+                4: 0.151,
+                5: -0.0037,
+                6: 0.0879,
+            },
+        }
     )
+
+    for idx, e_row in expected.iterrows():
+        r_row = result[result.Asteroid == e_row.nro].iloc[0]
+        np.testing.assert_array_equal(r_row.Asteroid, e_row.nro)
+        np.testing.assert_allclose(r_row.H12, e_row.H12, atol=r_row.error_H12)
+        np.testing.assert_allclose(r_row.G1, e_row.G1, atol=r_row.error_G1)
+        np.testing.assert_allclose(r_row.G2, e_row.G2, atol=r_row.error_G2)
+
+
+def test_Shev_fit(input_data):
+
     result = pyedra.Shev_fit(input_data)
 
-    np.testing.assert_array_equal(noob.nro, result.Asteroid)
+    expected = pd.DataFrame(
+        {
+            "nro": {0: 85, 1: 208, 2: 236, 3: 306, 4: 313, 5: 338, 6: 522},
+            "V_lin": {
+                0: 7.96,
+                1: 9.74,
+                2: 8.56,
+                3: 9.6,
+                4: 9.13,
+                5: 9.0,
+                6: 9.29,
+            },
+            "b": {
+                0: 0.7,
+                1: 0.95,
+                2: 0.97,
+                3: 3.23,
+                4: 0.3,
+                5: 0.9,
+                6: 0.39,
+            },
+            "c": {
+                0: 0.035,
+                1: 0.014,
+                2: 0.026,
+                3: 0.009,
+                4: 0.037,
+                5: 0.045,
+                6: 0.04,
+            },
+        }
+    )
 
-    for idx, error in enumerate(result.error_V_lin):
+    for idx, e_row in expected.iterrows():
+        r_row = result[result.Asteroid == e_row.nro].iloc[0]
+        np.testing.assert_array_equal(r_row.Asteroid, e_row.nro)
         np.testing.assert_allclose(
-            results.V_lin[idx], result.V_lin[idx], atol=error
+            r_row.V_lin, e_row.V_lin, atol=r_row.error_V_lin
         )
-    for idx, error in enumerate(result.error_b):
-        np.testing.assert_allclose(results.b[idx], result.b[idx], atol=error)
-    for idx, error in enumerate(result.error_c):
-        np.testing.assert_allclose(results.c[idx], result.c[idx], atol=error)
+        np.testing.assert_allclose(r_row.b, e_row.b, atol=r_row.error_b)
+        np.testing.assert_allclose(r_row.c, e_row.c, atol=r_row.error_c)
