@@ -23,7 +23,7 @@ PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 
 PENTTILA2016_PATH = PATH / "data" / "penttila2016.csv"
 
-bases = pd.read_csv(PENTTILA2016_PATH)
+CARBOGNANI2019_PATH = PATH / "data" / "carbognani2019.csv"
 
 
 def HG_fit(df):
@@ -169,6 +169,8 @@ def HG1G2_fit(df):
     G_2_column = np.empty(size)
     error_G_2_column = np.empty(size)
     R_column = np.empty(size)
+
+    bases = pd.read_csv(PENTTILA2016_PATH)
 
     for idx, id in enumerate(noob.id):
 
