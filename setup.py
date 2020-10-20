@@ -7,11 +7,11 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
-from ez_setup import use_setuptools
+import ez_setup
+
+ez_setup.use_setuptools()
 
 from setuptools import setup
-
-use_setuptools()
 
 
 VERSION = "0.0.1"
