@@ -166,9 +166,6 @@ def HG1G2_fit(df):
         data = df[df["nro"] == nro]
 
         bases = pd.read_csv("data/penttila2016.csv")
-        """A Penttilä, V. G. Shevchenko, O. Wilkman, & K. Muinonen (2016).
-        H,G1, G2 photometric phase function extended to low-accuracy data.
-        123:117–125."""
 
         alfa = bases["alfa"].to_numpy()
         phi1 = bases["phi1"].to_numpy()

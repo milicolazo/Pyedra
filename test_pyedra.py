@@ -18,10 +18,7 @@ import pytest
 
 @pytest.fixture(scope="session")
 def input_data():
-    """Carbognani, A., Cellino, A., & Caminiti, S. (2019). New phase-magnitude
-    curves for some main belt asteroids, fit of different photometric systems
-    and calibration of the albedo-Photometry relation. Planetary and Space
-    Science, 169, 15-34."""
+    
     return pd.read_csv("data/carbognani2019.csv")
 
 
