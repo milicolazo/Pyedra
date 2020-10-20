@@ -18,7 +18,7 @@ import pytest
 
 @pytest.fixture(scope="session")
 def input_data():
-    
+
     return pd.read_csv("data/carbognani2019.csv")
 
 
