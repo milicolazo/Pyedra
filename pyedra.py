@@ -7,6 +7,9 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
+import os
+import pathlib
+
 import numpy as np
 
 import pandas as pd
@@ -14,6 +17,13 @@ import pandas as pd
 import scipy
 import scipy.interpolate
 import scipy.optimize as optimization
+
+
+PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
+
+PENTTILA2016_PATH = PATH / "data" / "penttila2016.csv"
+
+bases = pd.read_csv(PENTTILA2016_PATH)
 
 
 def HG_fit(df):
@@ -164,8 +174,6 @@ def HG1G2_fit(df):
 
         # Filtrar un solo asteroide
         data = df[df["id"] == id]
-
-        bases = pd.read_csv("data/penttila2016.csv")
 
         alpha = bases["alpha"].to_numpy()
         phi1 = bases["phi1"].to_numpy()
