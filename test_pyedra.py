@@ -7,6 +7,9 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
+import os
+import pathlib
+
 import numpy as np
 
 import pandas as pd
@@ -16,10 +19,15 @@ import pyedra
 import pytest
 
 
+PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
+
+CARBOGNANI2019_PATH = PATH / "data" / "carbognani2019.csv"
+
+
 @pytest.fixture(scope="session")
 def input_data():
 
-    return pd.read_csv("data/carbognani2019.csv")
+    return pd.read_csv(CARBOGNANI2019_PATH)
 
 
 def test_HG_fit(input_data):
