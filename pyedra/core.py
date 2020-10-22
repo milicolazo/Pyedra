@@ -7,6 +7,12 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
+"""
+Pyedra.
+
+Implementation of phase function for asteroids in Python.
+"""
+
 import os
 import pathlib
 
@@ -27,7 +33,7 @@ CARBOGNANI2019_PATH = PATH / "datasets" / "carbognani2019.csv"
 
 
 def HG_fit(df):
-    """Fit (H,G) system to data from table"""
+    """Fit (H,G) system to data from table."""
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
@@ -95,7 +101,7 @@ def HG_fit(df):
 
 
 def Shev_fit(df):
-    """Fit Shevchenko system to data from table"""
+    """Fit Shevchenko system to data from table."""
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
@@ -158,7 +164,7 @@ def Shev_fit(df):
 
 
 def HG1G2_fit(df):
-    """Fit (H,G1,G2) system to data from table"""
+    """Fit (H,G1,G2) system to data from table."""
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
