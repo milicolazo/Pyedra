@@ -7,7 +7,7 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
-import core
+import pyedra
 
 import numpy as np
 
@@ -19,12 +19,12 @@ import pytest
 @pytest.fixture(scope="session")
 def input_data():
 
-    return pd.read_csv(core.CARBOGNANI2019_PATH)
+    return pd.read_csv(pyedra.CARBOGNANI2019_PATH)
 
 
 def test_HG_fit(input_data):
 
-    result = core.HG_fit(input_data)
+    result = pyedra.HG_fit(input_data)
 
     expected = pd.DataFrame(
         {
@@ -51,7 +51,7 @@ def test_HG_fit(input_data):
 
 def test_HG1G2_fit(input_data):
 
-    result = core.HG1G2_fit(input_data)
+    result = pyedra.HG1G2_fit(input_data)
 
     expected = pd.DataFrame(
         {
@@ -96,7 +96,7 @@ def test_HG1G2_fit(input_data):
 
 def test_Shev_fit(input_data):
 
-    result = core.Shev_fit(input_data)
+    result = pyedra.Shev_fit(input_data)
 
     expected = pd.DataFrame(
         {
