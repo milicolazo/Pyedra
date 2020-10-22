@@ -7,11 +7,11 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
-import pyedra
-
 import numpy as np
 
 import pandas as pd
+
+import pyedra
 
 import pytest
 
