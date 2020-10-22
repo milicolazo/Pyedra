@@ -330,7 +330,6 @@ def HG1G2_fit(df):
             (b * error_a) ** 2 + ((a + c) * error_b) ** 2 + (b * error_c) ** 2
         ) / ((a + b + c) ** 2)
 
-        # Pa decidir el mejor ajuste
         residuals = v_fit - func((fi1, fi2, fi3), *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
