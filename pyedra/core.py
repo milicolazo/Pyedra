@@ -7,11 +7,15 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
-"""
-Pyedra.
+# =====================================================================
+# DOCS
+# =====================================================================
 
-Implementation of phase function for asteroids in Python.
-"""
+"""Implementation of phase function for asteroids."""
+
+# ======================================================================
+# IMPORTS
+# ======================================================================
 
 import os
 import pathlib
@@ -24,6 +28,9 @@ import scipy
 import scipy.interpolate
 import scipy.optimize as optimization
 
+# =======================================================================
+# VARIABLES
+# =======================================================================
 
 PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 
@@ -32,8 +39,39 @@ PENTTILA2016_PATH = PATH / "datasets" / "penttila2016.csv"
 CARBOGNANI2019_PATH = PATH / "datasets" / "carbognani2019.csv"
 
 
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
+
+
 def HG_fit(df):
-    """Fit (H,G) system to data from table."""
+    """Fit (H-G) system to data from table.
+
+    HG_fit calculates the H and G parameters of the phase function
+    following the procedure described in Muinonen et al. (2010).
+
+    Parameters
+    ----------
+    df: ``pandas.DataFrame``
+        The dataframe must contain 3 columns as indicated here:
+        id (mpc number of the asteroid), alpha (phase angle) and
+        v (reduced magnitude in Johnson's V filter).
+
+    Returns
+    -------
+    model_df: ``pandas.DataFrame``
+        The output dataframe contains six columns: id (mpc number of
+        the asteroid), H (absolute magnitude returned by the fit),
+        H error (fit H parameter error), G (slope parameter returned by
+        the fit), G error (fit G parameter error) and R (fit
+        determination coefficient).
+
+    References
+    ----------
+    .. [1] Muinonen K., Belskaya I. N., Cellino A., Delbò M.,
+    Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
+    Icarus, 209, 542.
+    """
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
@@ -45,7 +83,6 @@ def HG_fit(df):
 
     for idx, id in enumerate(noob.id):
 
-        # Filtrar un solo asteroide
         data = df[df["id"] == id]
 
         alpha_list = data["alpha"].to_numpy()
@@ -73,7 +110,6 @@ def HG_fit(df):
             (a + b) ** 2
         )
 
-        # Pa decidir el mejor ajuste
         residuals = v_fit - func(alpha_fit, *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
@@ -101,7 +137,39 @@ def HG_fit(df):
 
 
 def Shev_fit(df):
-    """Fit Shevchenko system to data from table."""
+    """Fit Shevchenko equation to data from table.
+
+    Shev_fit calculates parameters of the three-parameter empirical
+    function proposed by Schevchenko (1996, 1997).
+
+    Parameters
+    ----------
+    df: ``pandas.DataFrame``
+        The dataframe must contain 3 columns as indicated here:
+        id (mpc number of the asteroid), alpha (phase angle) and
+        v (reduced magnitude in Johnson's V filter).
+
+    Returns
+    -------
+    model_df: ``pandas.DataFrame``
+        The output dataframe contains six columns: id (mpc number of
+        the asteroid), V_lin (magnitude calculated by linear
+        extrapolation to zero), V_lin error (fit V_lin parameter
+        error), b (fit parameter characterizing the opposition efect
+        amplitude), b error (fit b parameter error), c (fit parameter
+        describing the linear part of the magnitude phase dependence),
+        c error (fit c parameter error) and R (fit determination
+        coefficient).
+
+    References
+    ----------
+    .. [1] Shevchenko, V. G. 1996. Analysis of the asteroid phase
+    dependences of brightness. Lunar Planet Sci. XXVII, 1086.
+    .. [2] Shevchenko, V. G. 1997. Analysis of asteroid brightness
+    phase relations. Solar System Res. 31, 219-224.
+    .. [3] Belskaya, I. N., Shevchenko, V. G., 2000. Opposition effect
+    of asteroids. Icarus 147, 94-105.
+    """
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
@@ -115,7 +183,6 @@ def Shev_fit(df):
 
     for idx, id in enumerate(noob.id):
 
-        # Filtrar un solo asteroide
         data = df[df["id"] == id]
 
         alpha_list = data["alpha"].to_numpy()
@@ -132,7 +199,6 @@ def Shev_fit(df):
         error_b = np.sqrt(np.diag(cov)[1])
         error_c = np.sqrt(np.diag(cov)[2])
 
-        # Pa decidir el mejor ajuste
         residuals = V_list - func(alpha_list, *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((V_list - np.mean(V_list)) ** 2)
@@ -164,7 +230,35 @@ def Shev_fit(df):
 
 
 def HG1G2_fit(df):
-    """Fit (H,G1,G2) system to data from table."""
+    """Fit (H-G1-G2) system to data from table.
+
+    HG1G2_fit calculates the H,G1 and G2 parameters of the phase
+    function following the procedure described in
+    Muinonen et al. (2010).
+
+    Parameters
+    ----------
+    df: ``pandas.DataFrame``
+        The dataframe must contain 3 columns as indicated here:
+        id (mpc number of the asteroid), alpha (phase angle) and
+        v (reduced magnitude in Johnson's V filter).
+
+    Returns
+    -------
+    model_df: ``pandas.DataFrame``
+        The output dataframe contains eight columns: id (mpc number of
+        the asteroid), H (absolute magnitude returned by the fit),
+        H error (fit H parameter error), G1 (G1 parameter returned by
+        the fit), G1 error (fit G1 parameter error), G2 (G2 parameter
+        returned bythe fit), G2 error (fit G2 parameter error), and R
+        (fit determination coefficient).
+
+    References
+    ----------
+    .. [1] Muinonen K., Belskaya I. N., Cellino A., Delbò M.,
+    Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
+    Icarus, 209, 542.
+    """
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
@@ -180,7 +274,6 @@ def HG1G2_fit(df):
 
     for idx, id in enumerate(noob.id):
 
-        # Filtrar un solo asteroide
         data = df[df["id"] == id]
 
         alpha = bases["alpha"].to_numpy()
