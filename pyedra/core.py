@@ -38,11 +38,9 @@ PENTTILA2016_PATH = PATH / "datasets" / "penttila2016.csv"
 
 CARBOGNANI2019_PATH = PATH / "datasets" / "carbognani2019.csv"
 
-
 # =============================================================================
 # FUNCTIONS
 # =============================================================================
-
 
 def HG_fit(df):
     """Fit (H-G) system to data from table.
