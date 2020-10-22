@@ -7,4 +7,4 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
-from core.py import *
+from .core import *  # noqa
