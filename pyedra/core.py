@@ -29,7 +29,7 @@ import scipy.interpolate
 import scipy.optimize as optimization
 
 # =======================================================================
-# VARIABLES
+# CONSTANTS
 # =======================================================================
 
 PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))

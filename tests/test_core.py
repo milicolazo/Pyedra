@@ -7,11 +7,9 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
-"""
-Pyedra.
-
-Implementation of phase function for asteroids in Python.
-"""
+# ======================================================================
+# IMPORTS
+# ======================================================================
 
 import numpy as np
 
@@ -21,11 +19,20 @@ import pyedra
 
 import pytest
 
+# =============================================================================
+# CONSTANTS
+# =============================================================================
+
 
 @pytest.fixture(scope="session")
 def input_data():
 
     return pd.read_csv(pyedra.CARBOGNANI2019_PATH)
+
+
+# =============================================================================
+# TESTS
+# =============================================================================
 
 
 def test_HG_fit(input_data):
