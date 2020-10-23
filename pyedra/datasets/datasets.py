@@ -7,12 +7,9 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
-# ============================================================================
-# DOCS
-# ============================================================================
-
 """
-The pyedra.datasets module includes utilities to load datasets,
+The pyedra.datasets module includes utilities to load datasets.
+
 It also features some artificial data generators.
 """
 
@@ -37,7 +34,7 @@ PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 
 
 def load_carbognani2019():
-    """This data is used as input for testing the phase functions.
+    """Input for testing the phase functions.
 
     This dataset contains the first and second columns of Table 2 of
     Carbognani et al. (2019). These columns correspond to: phase angle
@@ -58,8 +55,7 @@ def load_carbognani2019():
 
 
 def load_penttila2016():
-    """Tabulated values of the base functions for the calculation of
-    the H-G1-G2 system.
+    """Tabulated values of the base functions for H-G1-G2 system.
 
     This dataset corresponds to Table B.4 of Penttila et al. (2016).
 
