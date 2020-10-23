@@ -7,10 +7,19 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
+# ============================================================================
+# DOCS
+# ============================================================================
+
 """
 Pyedra.
 
 Implementation of phase function for asteroids in Python.
 """
 
+# =============================================================================
+# IMPORTS
+# =============================================================================
+
+from .datasets import * # noqa
 from .core import *  # noqa

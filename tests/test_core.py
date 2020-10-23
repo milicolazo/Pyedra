@@ -15,7 +15,7 @@ import numpy as np
 
 import pandas as pd
 
-import pyedra
+import pyedra.datasets
 
 import pytest
 
@@ -25,9 +25,9 @@ import pytest
 
 
 @pytest.fixture(scope="session")
-def input_data():
+def carbognani2019():
 
-    return pd.read_csv(pyedra.CARBOGNANI2019_PATH)
+    return pyedra.datasets.load_carbognani2019()
 
 
 # =============================================================================
@@ -35,9 +35,9 @@ def input_data():
 # =============================================================================
 
 
-def test_HG_fit(input_data):
+def test_HG_fit(carbognani2019):
 
-    result = pyedra.HG_fit(input_data)
+    result = pyedra.HG_fit(carbognani2019)
 
     expected = pd.DataFrame(
         {
@@ -62,9 +62,9 @@ def test_HG_fit(input_data):
         np.testing.assert_allclose(r_row.G, e_row.G, atol=r_row.error_G)
 
 
-def test_HG1G2_fit(input_data):
+def test_HG1G2_fit(carbognani2019):
 
-    result = pyedra.HG1G2_fit(input_data)
+    result = pyedra.HG1G2_fit(carbognani2019)
 
     expected = pd.DataFrame(
         {
@@ -107,9 +107,9 @@ def test_HG1G2_fit(input_data):
         np.testing.assert_allclose(r_row.G2, e_row.G2, atol=r_row.error_G2)
 
 
-def test_Shev_fit(input_data):
+def test_Shev_fit(carbognani2019):
 
-    result = pyedra.Shev_fit(input_data)
+    result = pyedra.Shev_fit(carbognani2019)
 
     expected = pd.DataFrame(
         {

@@ -7,6 +7,10 @@
 # License: MIT
 #   Full Text: https://github.com/milicolazo/Pyedra/blob/master/LICENSE
 
+# ============================================================================
+# DOCS
+# ============================================================================
+
 """
 The pyedra.datasets module includes utilities to load datasets.
 
