@@ -39,6 +39,17 @@ def obs_counter(df, obs):
     return lt_idx.to_numpy()
 
 
+# ============================================================================
+# H, G
+# ============================================================================
+
+
+def __HGmodel(x, a, b):
+    return a * np.exp(-3.33 * np.tan(x / 2) ** 0.63) + b * np.exp(
+        -1.87 * np.tan(x / 2) ** 1.22
+    )
+
+
 def HG_fit(df):
     """Fit (H-G) system to data from table.
 
@@ -93,12 +104,7 @@ def HG_fit(df):
         v_fit = 10 ** (-0.4 * V_list)
         alpha_fit = alpha_list * np.pi / 180
 
-        def func(x, a, b):
-            return a * np.exp(-3.33 * np.tan(x / 2) ** 0.63) + b * np.exp(
-                -1.87 * np.tan(x / 2) ** 1.22
-            )
-
-        op, cov = optimization.curve_fit(func, alpha_fit, v_fit)
+        op, cov = optimization.curve_fit(__HGmodel, alpha_fit, v_fit)
 
         a = op[0]
         b = op[1]
@@ -112,7 +118,7 @@ def HG_fit(df):
             (a + b) ** 2
         )
 
-        residuals = v_fit - func(alpha_fit, *op)
+        residuals = v_fit - __HGmodel(alpha_fit, *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
@@ -136,6 +142,15 @@ def HG_fit(df):
     )
 
     return model_df
+
+
+# ============================================================================
+# Shevchenko
+# ============================================================================
+
+
+def __Shev_model(x, V_lin, b, c):
+    return V_lin + c * x - b / (1 + x)
 
 
 def Shev_fit(df):
@@ -178,6 +193,7 @@ def Shev_fit(df):
         raise ValueError(
             f"Some asteroids has less than 3 observations: {lt_str}"
         )
+
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
@@ -196,10 +212,7 @@ def Shev_fit(df):
         alpha_list = data["alpha"].to_numpy()
         V_list = data["v"].to_numpy()
 
-        def func(x, V_lin, b, c):
-            return V_lin + c * x - b / (1 + x)
-
-        op, cov = optimization.curve_fit(func, alpha_list, V_list)
+        op, cov = optimization.curve_fit(__Shev_model, alpha_list, V_list)
         V_lin = op[0]
         b = op[1]
         c = op[2]
@@ -207,7 +220,7 @@ def Shev_fit(df):
         error_b = np.sqrt(np.diag(cov)[1])
         error_c = np.sqrt(np.diag(cov)[2])
 
-        residuals = V_list - func(alpha_list, *op)
+        residuals = V_list - __Shev_model(alpha_list, *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((V_list - np.mean(V_list)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
@@ -235,6 +248,16 @@ def Shev_fit(df):
     )
 
     return model_df
+
+
+# ============================================================================
+# H, G1, G2
+# ============================================================================
+
+
+def __HG1G2_model(X, a, b, c):
+    x, y, z = X
+    return a * x + b * y + c * z
 
 
 def HG1G2_fit(df):
@@ -273,6 +296,7 @@ def HG1G2_fit(df):
         raise ValueError(
             f"Some asteroids has less than 3 observations: {lt_str}"
         )
+
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
@@ -314,14 +338,10 @@ def HG1G2_fit(df):
             p3 = y_interp3(alpha_b)
             fi3 = np.append(fi3, p3)
 
-        def func(X, a, b, c):
-            x, y, z = X
-            return a * x + b * y + c * z
-
         v = data["v"].to_numpy()
         v_fit = 10 ** (-0.4 * v)
 
-        op, cov = optimization.curve_fit(func, (fi1, fi2, fi3), v_fit)
+        op, cov = optimization.curve_fit(__HG1G2_model, (fi1, fi2, fi3), v_fit)
         a = op[0]
         b = op[1]
         c = op[2]
@@ -344,7 +364,7 @@ def HG1G2_fit(df):
             (b * error_a) ** 2 + ((a + c) * error_b) ** 2 + (b * error_c) ** 2
         ) / ((a + b + c) ** 2)
 
-        residuals = v_fit - func((fi1, fi2, fi3), *op)
+        residuals = v_fit - __HG1G2_model((fi1, fi2, fi3), *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
