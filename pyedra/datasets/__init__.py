@@ -65,7 +65,7 @@ def load_penttila2016():
 
     References
     ----------
-    .. [1] A. Penttil ̈a,  V. G. Shevchenko, O. Wilkman, & K. Muinonen
+    .. [1] A. Penttilä,  V. G. Shevchenko, O. Wilkman, & K. Muinonen
     (2016). H,G1, G2 photometric phase function extended to
     low-accuracy data. 123:117–125.
     """
