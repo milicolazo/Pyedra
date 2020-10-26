@@ -35,6 +35,19 @@ raiser = pd.DataFrame({"id": {0: 85}, "alpha": {0: 5}, "v": {0: 8}})
 # TESTS
 # =============================================================================
 
+def test_raises_1():
+    with pytest.raises(ValueError):
+        pyedra.HG_fit(raiser)
+
+
+def test_raises_2():
+    with pytest.raises(ValueError):
+        pyedra.HG1G2_fit(raiser)
+
+
+def test_raises_3():
+    with pytest.raises(ValueError):
+        pyedra.Shev_fit(raiser)
 
 def test_obs_counter(carbognani2019):
 
@@ -162,18 +175,3 @@ def test_Shev_fit(carbognani2019):
         )
         np.testing.assert_allclose(r_row.b, e_row.b, atol=r_row.error_b)
         np.testing.assert_allclose(r_row.c, e_row.c, atol=r_row.error_c)
-
-
-def test_raises_1():
-    with pytest.raises(ValueError):
-        pyedra.HG_fit(raiser)
-
-
-def test_raises_2():
-    with pytest.raises(ValueError):
-        pyedra.HG1G2_fit(raiser)
-
-
-def test_raises_3():
-    with pytest.raises(ValueError):
-        pyedra.Shev_fit(raiser)

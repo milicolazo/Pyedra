@@ -33,7 +33,18 @@ from . import datasets
 
 
 def obs_counter(df, obs):
-    """Count the observations. A minimum is needed to the fits."""
+    """Count the observations. A minimum is needed to the fits.
+    
+    Parameters
+    ----------
+    df: ``pandas.DataFrame``
+        The dataframe must contain 3 columns as indicated here:
+        id (mpc number of the asteroid), alpha (phase angle) and
+        v (reduced magnitude in Johnson's V filter).
+    
+    obs: int
+        Minimum number of observations needed to perform the fit.
+    """
     df_cnt = df.groupby("id").count()
     lt_idx = df_cnt[df_cnt.alpha < obs].index
     return lt_idx.to_numpy()
