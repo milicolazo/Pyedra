@@ -25,12 +25,17 @@ import scipy
 import scipy.interpolate
 import scipy.optimize as optimization
 
-from . import datasets
+import pyedra.datasets
 
 # ============================================================================
 # FUNCTIONS
 # ============================================================================
 
+def obs_counter(df, obs):
+
+    df_cnt = df.groupby("id").count()
+    lt_idx = df_cnt[df_cnt.alpha < obs].index
+    return lt_idx.to_numpy()       
 
 def HG_fit(df):
     """Fit (H-G) system to data from table.
@@ -59,7 +64,12 @@ def HG_fit(df):
     .. [1] Muinonen K., Belskaya I. N., Cellino A., Delbò M.,
     Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
     Icarus, 209, 542.
-    """
+    """ 
+    lt = obs_counter(df, 2)
+    if len(lt):
+        lt_str = " - ".join(str(idx) for idx in lt)
+        raise ValueError(f"Some asteroids has less than 2 observations: {lt_str}")
+    
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
@@ -158,6 +168,10 @@ def Shev_fit(df):
     .. [3] Belskaya, I. N., Shevchenko, V. G., 2000. Opposition effect
     of asteroids. Icarus 147, 94-105.
     """
+    lt = obs_counter(df, 3)
+    if len(lt):
+        lt_str = " - ".join(str(idx) for idx in lt)
+        raise ValueError(f"Some asteroids has less than 3 observations: {lt_str}")
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
@@ -247,6 +261,10 @@ def HG1G2_fit(df):
     Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
     Icarus, 209, 542.
     """
+    lt = obs_counter(df, 3)
+    if len(lt):
+        lt_str = " - ".join(str(idx) for idx in lt)
+        raise ValueError(f"Some asteroids has less than 3 observations: {lt_str}")   
     noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
