@@ -21,11 +21,11 @@ import numpy as np
 
 import pandas as pd
 
-import pyedra
-
 import scipy
 import scipy.interpolate
 import scipy.optimize as optimization
+
+from . import datasets
 
 # ============================================================================
 # FUNCTIONS
@@ -258,7 +258,7 @@ def HG1G2_fit(df):
     error_G_2_column = np.empty(size)
     R_column = np.empty(size)
 
-    penttila2016 = pyedra.datasets.load_penttila2016()
+    penttila2016 = datasets.load_penttila2016()
 
     for idx, id in enumerate(noob.id):
 
