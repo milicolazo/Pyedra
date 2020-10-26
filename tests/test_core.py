@@ -35,6 +35,7 @@ raiser = pd.DataFrame({"id": {0: 85}, "alpha": {0: 5}, "v": {0: 8}})
 # TESTS
 # =============================================================================
 
+
 def test_raises_1():
     with pytest.raises(ValueError):
         pyedra.HG_fit(raiser)
@@ -48,6 +49,7 @@ def test_raises_2():
 def test_raises_3():
     with pytest.raises(ValueError):
         pyedra.Shev_fit(raiser)
+
 
 def test_obs_counter(carbognani2019):
 
