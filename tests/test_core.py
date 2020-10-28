@@ -26,7 +26,6 @@ import pytest
 
 @pytest.fixture(scope="session")
 def carbognani2019():
-
     return pyedra.datasets.load_carbognani2019()
 
 
@@ -36,17 +35,25 @@ raiser = pd.DataFrame({"id": {0: 85}, "alpha": {0: 5}, "v": {0: 8}})
 # =============================================================================
 
 
-def test_raises_1():
+def test_PyedraFitDataFrame(carbognani2019):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    np.testing.assert_array_equal(pdf.id, pdf.model_df.id)
+    np.testing.assert_array_equal(pdf.H, pdf.model_df.H)
+    np.testing.assert_array_equal(pdf.G, pdf.model_df.G)
+
+
+def test_raises_HG():
     with pytest.raises(ValueError):
         pyedra.HG_fit(raiser)
 
 
-def test_raises_2():
+def test_raises_HG1G2():
     with pytest.raises(ValueError):
         pyedra.HG1G2_fit(raiser)
 
 
-def test_raises_3():
+def test_raises_Shev():
     with pytest.raises(ValueError):
         pyedra.Shev_fit(raiser)
 
@@ -62,7 +69,7 @@ def test_obs_counter(carbognani2019):
 
 def test_HG_fit(carbognani2019):
 
-    result = pyedra.HG_fit(carbognani2019)
+    result = pyedra.HG_fit(carbognani2019).model_df
 
     expected = pd.DataFrame(
         {
@@ -89,7 +96,7 @@ def test_HG_fit(carbognani2019):
 
 def test_HG1G2_fit(carbognani2019):
 
-    result = pyedra.HG1G2_fit(carbognani2019)
+    result = pyedra.HG1G2_fit(carbognani2019).model_df
 
     expected = pd.DataFrame(
         {
@@ -134,7 +141,7 @@ def test_HG1G2_fit(carbognani2019):
 
 def test_Shev_fit(carbognani2019):
 
-    result = pyedra.Shev_fit(carbognani2019)
+    result = pyedra.Shev_fit(carbognani2019).model_df
 
     expected = pd.DataFrame(
         {

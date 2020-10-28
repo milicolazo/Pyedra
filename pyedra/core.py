@@ -17,6 +17,8 @@
 # IMPORTS
 # =============================================================================
 
+import attr
+
 import numpy as np
 
 import pandas as pd
@@ -26,6 +28,22 @@ import scipy.interpolate
 import scipy.optimize as optimization
 
 from . import datasets
+
+# ============================================================================
+# CLASSES
+# ============================================================================
+
+
+@attr.s(frozen=True)
+class PyedraFitDataFrame:
+    """Initialize a dataframe model_df to which we can apply function a."""
+
+    model_df = attr.ib()
+
+    def __getattr__(self, a):
+        """Return the dataframe after applying the "a" function."""
+        return getattr(self.model_df, a)
+
 
 # ============================================================================
 # FUNCTIONS
@@ -44,6 +62,12 @@ def obs_counter(df, obs):
 
     obs: int
         Minimum number of observations needed to perform the fit.
+
+    Return
+    ------
+    out: ndarray
+        Numpy array containing the asteroids whose number of
+        observations is less than obs.
     """
     df_cnt = df.groupby("id").count()
     lt_idx = df_cnt[df_cnt.alpha < obs].index
@@ -55,7 +79,7 @@ def obs_counter(df, obs):
 # ============================================================================
 
 
-def __HGmodel(x, a, b):
+def _HGmodel(x, a, b):
     return a * np.exp(-3.33 * np.tan(x / 2) ** 0.63) + b * np.exp(
         -1.87 * np.tan(x / 2) ** 1.22
     )
@@ -115,7 +139,7 @@ def HG_fit(df):
         v_fit = 10 ** (-0.4 * V_list)
         alpha_fit = alpha_list * np.pi / 180
 
-        op, cov = optimization.curve_fit(__HGmodel, alpha_fit, v_fit)
+        op, cov = optimization.curve_fit(_HGmodel, alpha_fit, v_fit)
 
         a = op[0]
         b = op[1]
@@ -129,7 +153,7 @@ def HG_fit(df):
             (a + b) ** 2
         )
 
-        residuals = v_fit - __HGmodel(alpha_fit, *op)
+        residuals = v_fit - _HGmodel(alpha_fit, *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
@@ -152,7 +176,7 @@ def HG_fit(df):
         }
     )
 
-    return model_df
+    return PyedraFitDataFrame(model_df=model_df)
 
 
 # ============================================================================
@@ -160,7 +184,7 @@ def HG_fit(df):
 # ============================================================================
 
 
-def __Shev_model(x, V_lin, b, c):
+def _Shev_model(x, V_lin, b, c):
     return V_lin + c * x - b / (1 + x)
 
 
@@ -223,7 +247,7 @@ def Shev_fit(df):
         alpha_list = data["alpha"].to_numpy()
         V_list = data["v"].to_numpy()
 
-        op, cov = optimization.curve_fit(__Shev_model, alpha_list, V_list)
+        op, cov = optimization.curve_fit(_Shev_model, alpha_list, V_list)
         V_lin = op[0]
         b = op[1]
         c = op[2]
@@ -231,7 +255,7 @@ def Shev_fit(df):
         error_b = np.sqrt(np.diag(cov)[1])
         error_c = np.sqrt(np.diag(cov)[2])
 
-        residuals = V_list - __Shev_model(alpha_list, *op)
+        residuals = V_list - _Shev_model(alpha_list, *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((V_list - np.mean(V_list)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
@@ -258,7 +282,7 @@ def Shev_fit(df):
         }
     )
 
-    return model_df
+    return PyedraFitDataFrame(model_df=model_df)
 
 
 # ============================================================================
@@ -266,7 +290,7 @@ def Shev_fit(df):
 # ============================================================================
 
 
-def __HG1G2_model(X, a, b, c):
+def _HG1G2_model(X, a, b, c):
     x, y, z = X
     return a * x + b * y + c * z
 
@@ -352,7 +376,7 @@ def HG1G2_fit(df):
         v = data["v"].to_numpy()
         v_fit = 10 ** (-0.4 * v)
 
-        op, cov = optimization.curve_fit(__HG1G2_model, (fi1, fi2, fi3), v_fit)
+        op, cov = optimization.curve_fit(_HG1G2_model, (fi1, fi2, fi3), v_fit)
         a = op[0]
         b = op[1]
         c = op[2]
@@ -375,7 +399,7 @@ def HG1G2_fit(df):
             (b * error_a) ** 2 + ((a + c) * error_b) ** 2 + (b * error_c) ** 2
         ) / ((a + b + c) ** 2)
 
-        residuals = v_fit - __HG1G2_model((fi1, fi2, fi3), *op)
+        residuals = v_fit - _HG1G2_model((fi1, fi2, fi3), *op)
         ss_res = np.sum(residuals ** 2)
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
@@ -402,4 +426,4 @@ def HG1G2_fit(df):
         }
     )
 
-    return model_df
+    return PyedraFitDataFrame(model_df=model_df)

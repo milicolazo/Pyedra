@@ -21,5 +21,4 @@ Implementation of phase function for asteroids in Python.
 # IMPORTS
 # =============================================================================
 
-from .datasets import * # noqa
 from .core import *  # noqa
