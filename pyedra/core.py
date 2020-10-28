@@ -89,7 +89,7 @@ def HG_fit(df):
     """Fit (H-G) system to data from table.
 
     HG_fit calculates the H and G parameters of the phase function
-    following the procedure described in Muinonen et al. (2010).
+    following the procedure described in [1]_ .
 
     Parameters
     ----------
@@ -192,7 +192,7 @@ def Shev_fit(df):
     """Fit Shevchenko equation to data from table.
 
     Shev_fit calculates parameters of the three-parameter empirical
-    function proposed by Schevchenko (1996, 1997).
+    function proposed by Schevchenko [2]_, [3]_ .
 
     Parameters
     ----------
@@ -210,18 +210,18 @@ def Shev_fit(df):
         error), b (fit parameter characterizing the opposition efect
         amplitude), b error (fit b parameter error), c (fit parameter
         describing the linear part of the magnitude phase dependence),
-        c error (fit c parameter error) and R (fit determination
+        c error (fit c parameter error) [4]_ and R (fit determination
         coefficient).
 
     References
     ----------
-    .. [1] Shevchenko, V. G. 1996. Analysis of the asteroid phase
+    .. [2] Shevchenko, V. G. 1996. Analysis of the asteroid phase
        dependences of brightness. Lunar Planet Sci. XXVII, 1086.
 
-    .. [2] Shevchenko, V. G. 1997. Analysis of asteroid brightness
+    .. [3] Shevchenko, V. G. 1997. Analysis of asteroid brightness
        phase relations. Solar System Res. 31, 219-224.
 
-    .. [3] Belskaya, I. N., Shevchenko, V. G., 2000. Opposition effect
+    .. [4] Belskaya, I. N., Shevchenko, V. G., 2000. Opposition effect
        of asteroids. Icarus 147, 94-105.
     """
     lt = obs_counter(df, 3)
@@ -301,8 +301,7 @@ def HG1G2_fit(df):
     """Fit (H-G1-G2) system to data from table.
 
     HG1G2_fit calculates the H,G1 and G2 parameters of the phase
-    function following the procedure described in
-    Muinonen et al. (2010).
+    function following the procedure described in [5]_ .
 
     Parameters
     ----------
@@ -323,7 +322,7 @@ def HG1G2_fit(df):
 
     References
     ----------
-    .. [1] Muinonen K., Belskaya I. N., Cellino A., Delbò M.,
+    .. [5] Muinonen K., Belskaya I. N., Cellino A., Delbò M.,
        Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
        Icarus, 209, 542.
     """

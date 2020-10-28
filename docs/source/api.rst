@@ -17,7 +17,7 @@ with three columns: id (mpc number), alpha (phase angle) and v (reduced magnitud
    
 
 Module ``pyedra``
-----------------------
+-----------------
 
 .. automodule:: pyedra.core
    :members:
@@ -25,7 +25,7 @@ Module ``pyedra``
    :member-order: bysource
    
 Module ``pyedra.datasets``
-----------------------
+--------------------------
 
 .. automodule:: pyedra.datasets
    :members:
