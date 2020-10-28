@@ -10,6 +10,5 @@ recursive-include docs *.rst
 recursive-include docs Makefile
 recursive-include docs *.txt
 
-
 exclude tox.ini
 exclude pyproject.toml
