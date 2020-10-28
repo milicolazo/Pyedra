@@ -110,8 +110,8 @@ def HG_fit(df):
     References
     ----------
     .. [1] Muinonen K., Belskaya I. N., Cellino A., Delbò M.,
-    Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
-    Icarus, 209, 542.
+       Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
+       Icarus, 209, 542.
     """
     lt = obs_counter(df, 2)
     if len(lt):
@@ -216,11 +216,13 @@ def Shev_fit(df):
     References
     ----------
     .. [1] Shevchenko, V. G. 1996. Analysis of the asteroid phase
-    dependences of brightness. Lunar Planet Sci. XXVII, 1086.
+       dependences of brightness. Lunar Planet Sci. XXVII, 1086.
+
     .. [2] Shevchenko, V. G. 1997. Analysis of asteroid brightness
-    phase relations. Solar System Res. 31, 219-224.
+       phase relations. Solar System Res. 31, 219-224.
+
     .. [3] Belskaya, I. N., Shevchenko, V. G., 2000. Opposition effect
-    of asteroids. Icarus 147, 94-105.
+       of asteroids. Icarus 147, 94-105.
     """
     lt = obs_counter(df, 3)
     if len(lt):
@@ -322,8 +324,8 @@ def HG1G2_fit(df):
     References
     ----------
     .. [1] Muinonen K., Belskaya I. N., Cellino A., Delbò M.,
-    Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
-    Icarus, 209, 542.
+       Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
+       Icarus, 209, 542.
     """
     lt = obs_counter(df, 3)
     if len(lt):
