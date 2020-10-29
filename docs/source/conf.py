@@ -17,7 +17,7 @@ import sys
 #PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 #PYEDRA_PATH = PATH.parent.parent / 'pyedra'
 
-sys.path.insert(0, os.path.abspath('../../pyedra/'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 import pyedra
 
