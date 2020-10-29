@@ -1,14 +1,3 @@
-pyedra package
-==============
-
-Module contents
----------------
-
-.. automodule:: pyedra
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   
 pyedra.core module
 ------------------
 
@@ -16,19 +5,6 @@ pyedra.core module
    :members:
    :undoc-members:
    :show-inheritance:
-   
-Submodules
-----------
-
-
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   pyedra.datasets
-
 
 
 

@@ -1,8 +1,5 @@
-pyedra.datasets package
-=======================
-
-Module contents
----------------
+pyedra.datasets module
+----------------------
 
 .. automodule:: pyedra.datasets
    :members:
