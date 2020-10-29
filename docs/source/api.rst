@@ -20,13 +20,9 @@ Module ``pyedra``
 
 .. automodule:: pyedra.core
    :members:
-   :show-inheritance:
-   :member-order: bysource
    
 Module ``pyedra.datasets``
---------------------------
+---------------------------
 
 .. automodule:: pyedra.datasets
    :members:
-   :show-inheritance:
-   :member-order: bysource
