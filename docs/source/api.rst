@@ -18,4 +18,4 @@ Pyedra
 .. toctree::
    :maxdepth: 4
 
-   pyedra
+   pyedra.core
