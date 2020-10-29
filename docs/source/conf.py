@@ -40,14 +40,16 @@ release = '0.0.1'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.coverage',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.napoleon',
+
     'sphinx.ext.intersphinx',
     'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',
-]
+    'sphinx.ext.autosummary',
 
-napoleon_google_docstring = False
-napoleon_use_param = False
-napoleon_use_ivar = True
+    'nbsphinx'
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
