@@ -46,7 +46,9 @@ extensions = [
 
     'sphinx.ext.intersphinx',
     'sphinx.ext.viewcode',
-    'sphinx.ext.autosummary',
+    'sphinx.ext.autosummary'
+    
+    'nbsphinx',
 ]
 
 napoleon_numpy_docstring = True
