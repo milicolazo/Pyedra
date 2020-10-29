@@ -9,6 +9,7 @@ Pyedra's documentation
 .. only:: html
 
 .. toctree::
+   :maxdepth: 1
    :caption: Contents:
    
    license
