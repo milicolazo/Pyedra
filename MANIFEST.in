@@ -4,11 +4,11 @@ include README.md
 recursive-include pyedra *.csv
 recursive-exclude tests *.py
 
-recursive-include docs *.bat
-recursive-include docs *.py
-recursive-include docs *.rst
-recursive-include docs Makefile
-recursive-include docs *.txt
+recursive-exclude docs *.bat
+recursive-exclude docs *.py
+recursive-exclude docs *.rst
+recursive-exclude docs Makefile
+recursive-exclude docs *.txt
 
 exclude tox.ini
 exclude pyproject.toml
