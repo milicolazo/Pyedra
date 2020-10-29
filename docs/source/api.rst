@@ -13,7 +13,7 @@ with three columns: id (mpc number), alpha (phase angle) and v (reduced magnitud
 -------------------------------------------------------------------------------------
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
    
 Module ``pyedra.core``
 ----------------------
