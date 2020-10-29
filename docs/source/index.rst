@@ -14,8 +14,9 @@ Pyedra's documentation
    license
    installation
    api
-
-
+   modules
+   pyedra
+   pyedra.datasets
 
 Indices and tables
 ==================
