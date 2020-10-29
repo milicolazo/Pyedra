@@ -16,7 +16,12 @@ import os
 import sys
 import pathlib
 
-sys.path.insert(0, os.path.abspath('../'))
+CURRENT_PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
+PYEDRA_PATH = CURRENT_PATH.parent.parent
+
+sys.path.insert(0, str(PYEDRA_PATH))
+
+from setup import VERSION
 
 import pyedra
 
@@ -27,9 +32,9 @@ copyright = '2020, Milagros Colazo'
 author = 'Milagros Colazo'
 
 # The short X.Y version
-version = ''
+version = VERSION
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = VERSION
 
 
 # -- General configuration ---------------------------------------------------
