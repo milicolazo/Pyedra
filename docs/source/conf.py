@@ -17,8 +17,6 @@ import sys
 
 sys.path.insert(0, os.path.abspath('../..'))
 
-from setup import VERSION
-
 import pyedra
 
 # -- Project information -----------------------------------------------------
@@ -27,10 +25,8 @@ project = 'Pyedra'
 copyright = '2020, Milagros Colazo'
 author = 'Milagros Colazo'
 
-# The short X.Y version
-version = VERSION
 # The full version, including alpha/beta/rc tags
-release = VERSION
+release = '0.0.1'
 
 
 # -- General configuration ---------------------------------------------------
