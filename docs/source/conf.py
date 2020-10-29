@@ -23,7 +23,6 @@ sys.path.insert(0, str(PYEDRA_PATH))
 
 #sys.path.insert(0, os.path.abspath('../..'))
 
-import pyedra
 
 # -- Project information -----------------------------------------------------
 
