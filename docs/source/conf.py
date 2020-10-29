@@ -14,12 +14,8 @@
 #
 import os
 import sys
-import pathlib
 
-CURRENT_PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
-PYEDRA_PATH = CURRENT_PATH.parent.parent
-
-sys.path.insert(0, str(PYEDRA_PATH))
+sys.path.insert(0, os.path.abspath('../..'))
 
 from setup import VERSION
 
