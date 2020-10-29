@@ -23,6 +23,7 @@ sys.path.insert(0, str(PYEDRA_PATH))
 
 #sys.path.insert(0, os.path.abspath('../..'))
 
+import pyedra
 
 # -- Project information -----------------------------------------------------
 
@@ -57,6 +58,8 @@ extensions = [
 
     'nbsphinx'
 ]
+
+autodoc_mock_imports = ["numpy", "pandas", "scipy", "attr"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
