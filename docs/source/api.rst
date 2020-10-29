@@ -8,32 +8,14 @@ with three columns: id (mpc number), alpha (phase angle) and v (reduced magnitud
 
 - **Shev_fit**: adjusts the Shevchenko triparametric function to the data set.
 
-- **HG1G2_fit**: adjusts the triparametric function H-G1-G2 to the data set.
+- **HG1G2_fit**: adjusts the triparametric function H-G1-G2 to the data set. 
 
------------------------------------------------------------------------------------------------
+----------------------------------------
 
-.. toctree::
-   :maxdepth: 4
-
-Subpackages
------------
+Pyedra
+------
 
 .. toctree::
    :maxdepth: 4
 
-
-Module ``pyedra.core``
-----------------------
-
-.. automodule:: pyedra.core
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module ``pyedra.datasets``
---------------------------
-
-.. automodule:: pyedra.datasets
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   pyedra
