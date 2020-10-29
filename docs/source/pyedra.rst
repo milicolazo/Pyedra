@@ -1,6 +1,26 @@
 pyedra package
 ==============
 
+Module contents
+---------------
+
+.. automodule:: pyedra
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   
+pyedra.core module
+------------------
+
+.. automodule:: pyedra.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   
+Submodules
+----------
+
+
 Subpackages
 -----------
 
@@ -9,21 +29,6 @@ Subpackages
 
    pyedra.datasets
 
-Submodules
-----------
 
-pyedra.core module
-------------------
 
-.. automodule:: pyedra.core
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
-Module contents
----------------
-
-.. automodule:: pyedra
-   :members:
-   :undoc-members:
-   :show-inheritance:
