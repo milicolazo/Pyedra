@@ -8,6 +8,14 @@ Pyedra's documentation
 
 .. only:: html
 
+.. image:: https://travis-ci.com/milicolazo/Pyedra.svg?branch=master
+    :target: https://travis-ci.com/milicolazo/Pyedra
+    :alt: Build Status
+
+.. image:: https://readthedocs.org/projects/pyedra/badge/?version=latest
+    :target: https://pyedra.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
 
 **Pyedra** is a python library that allows you to fit three different models of asteroid phase functions to your observations.
 
@@ -25,13 +33,14 @@ Repository and Issues
 
 https://github.com/milicolazo/Pyedra
 
+--------------------------------------------------------
 
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
    
-   license
    installation
+   license
    api
 
 
