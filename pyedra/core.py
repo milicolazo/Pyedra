@@ -346,18 +346,18 @@ def HG1G2_fit(df):
 
     penttila2016 = datasets.load_penttila2016()
 
+    alpha = penttila2016["alpha"].to_numpy()
+    phi1 = penttila2016["phi1"].to_numpy()
+    phi2 = penttila2016["phi2"].to_numpy()
+    phi3 = penttila2016["phi3"].to_numpy()
+
+    y_interp1 = scipy.interpolate.interp1d(alpha, phi1)
+    y_interp2 = scipy.interpolate.interp1d(alpha, phi2)
+    y_interp3 = scipy.interpolate.interp1d(alpha, phi3)
+
     for idx, id in enumerate(noob.id):
 
         data = df[df["id"] == id]
-
-        alpha = penttila2016["alpha"].to_numpy()
-        phi1 = penttila2016["phi1"].to_numpy()
-        phi2 = penttila2016["phi2"].to_numpy()
-        phi3 = penttila2016["phi3"].to_numpy()
-
-        y_interp1 = scipy.interpolate.interp1d(alpha, phi1)
-        y_interp2 = scipy.interpolate.interp1d(alpha, phi2)
-        y_interp3 = scipy.interpolate.interp1d(alpha, phi3)
 
         fi1 = np.array([])
         fi2 = np.array([])
