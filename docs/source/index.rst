@@ -41,6 +41,7 @@ https://github.com/milicolazo/Pyedra
    
    installation
    license
+   tutorial.ipynb
    api
 
 
