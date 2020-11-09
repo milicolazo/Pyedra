@@ -4,11 +4,8 @@ include README.md
 recursive-include pyedra *.csv
 recursive-exclude tests *.py
 
-recursive-exclude docs *.bat
-recursive-exclude docs *.py
-recursive-exclude docs *.rst
-recursive-exclude docs Makefile
-recursive-exclude docs *.txt
+recursive-exclude docs *
+
 recursive-exclude docs/source/_static emptyfile
 recursive-exclude docs/source/_templates emptyfile
 
