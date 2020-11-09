@@ -1,4 +1,5 @@
 ipykernel
-Sphinx<3.0
+ipython
+Sphinx
 sphinx-rtd-theme
 nbsphinx

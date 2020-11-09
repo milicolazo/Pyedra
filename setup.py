@@ -41,5 +41,5 @@ setup(
     packages=["pyedra", "pyedra.datasets"],
     classifiers=["Programming Language :: Python :: 3.8"],
     license="The MIT License",
-    install_requires=["numpy", "pandas", "scipy", "attr"],
+    install_requires=["numpy", "pandas", "scipy", "attr", "matplotlib"],
 )
