@@ -47,6 +47,7 @@ class PyedraFitDataFrame:
         return getattr(self.model_df, a)
 
     def plot(self, df, ax=None, **kwargs):
+        """Return a graph."""
 
         noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
 
