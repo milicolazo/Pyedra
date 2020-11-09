@@ -141,10 +141,8 @@ def HG_fit(df):
 
         op, cov = optimization.curve_fit(_HGmodel, alpha_fit, v_fit)
 
-        a = op[0]
-        b = op[1]
-        error_a = np.sqrt(np.diag(cov)[0])
-        error_b = np.sqrt(np.diag(cov)[1])
+        a, b = op
+        error_a, error_b = np.sqrt(np.diag(cov))
 
         H = -2.5 * np.log10(a + b)
         error_H = 1.0857362 * np.sqrt(error_a ** 2 + error_b ** 2) / (a + b)
@@ -250,12 +248,9 @@ def Shev_fit(df):
         V_list = data["v"].to_numpy()
 
         op, cov = optimization.curve_fit(_Shev_model, alpha_list, V_list)
-        V_lin = op[0]
-        b = op[1]
-        c = op[2]
-        error_V_lin = np.sqrt(np.diag(cov)[0])
-        error_b = np.sqrt(np.diag(cov)[1])
-        error_c = np.sqrt(np.diag(cov)[2])
+
+        V_lin, b, c = op
+        error_V_lin, error_b, error_c = np.sqrt(np.diag(cov))
 
         residuals = V_list - _Shev_model(alpha_list, *op)
         ss_res = np.sum(residuals ** 2)
@@ -378,12 +373,9 @@ def HG1G2_fit(df):
         v_fit = 10 ** (-0.4 * v)
 
         op, cov = optimization.curve_fit(_HG1G2_model, (fi1, fi2, fi3), v_fit)
-        a = op[0]
-        b = op[1]
-        c = op[2]
-        error_a = np.sqrt(np.diag(cov)[0])
-        error_b = np.sqrt(np.diag(cov)[1])
-        error_c = np.sqrt(np.diag(cov)[2])
+
+        a, b, c = op
+        error_a, error_b, error_c = np.sqrt(np.diag(cov))
 
         H_1_2 = -2.5 * np.log10(a + b + c)
         error_H_1_2 = (
