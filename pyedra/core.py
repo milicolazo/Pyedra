@@ -19,8 +19,6 @@
 
 import attr
 
-import itertools
-
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -49,30 +47,33 @@ class PyedraFitDataFrame:
         return getattr(self.model_df, a)
 
     def plot(self, df, ax=None, **kwargs):
-        
-        noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
-        
-        def MODEL(x, H, G):
-                y = H - 2.5 * np.log10(
-                    (1 - G) * np.exp(-3.33 * np.tan(x / 2) ** 0.63)
-                    + G * np.exp(-1.87 * np.tan(x / 2) ** 1.22)
-                )
-                return y
 
-        if ax == None:
+        noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
+
+        def MODEL(x, H, G):
+            y = H - 2.5 * np.log10(
+                (1 - G) * np.exp(-3.33 * np.tan(x / 2) ** 0.63)
+                + G * np.exp(-1.87 * np.tan(x / 2) ** 1.22)
+            )
+            return y
+
+        if ax is None:
             ax = plt.gca()
-        
+
         ax.invert_yaxis()
-        ax.set_title('Phase curves')
-        ax.set_xlabel('Phase angle')
-        ax.set_ylabel('V')
-        
+        ax.set_title("Phase curves")
+        ax.set_xlabel("Phase angle")
+        ax.set_ylabel("V")
+
         for idx in noob.id:
             data = df[df["id"] == idx]
-            modely = MODEL(data.alpha* np.pi / 180, HG_fit(data).H[0], HG_fit(data).G[0])
+            modely = MODEL(
+                data.alpha * np.pi / 180, HG_fit(data).H[0], HG_fit(data).G[0]
+            )
             ax.plot(data.alpha, modely, "--")
-            ax.plot(data.alpha, data.v, marker = 'o', linestyle= 'None')
+            ax.plot(data.alpha, data.v, marker="o", linestyle="None")
         return ax
+
 
 # ============================================================================
 # FUNCTIONS
