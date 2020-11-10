@@ -50,7 +50,7 @@ class PyedraFitDataFrame:
         """Return a graph."""
         noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
 
-        def fit(alpha, H, G):
+        def fit_y(alpha, H, G):
             x = alpha * np.pi / 180
             y = H - 2.5 * np.log10(
                 (1 - G) * np.exp(-3.33 * np.tan(x / 2) ** 0.63)
@@ -69,7 +69,7 @@ class PyedraFitDataFrame:
         for idx, n_row in noob.iterrows():
             data = df[df["id"] == n_row.id]
             m_row = self.model_df[self.model_df.id == n_row.id].iloc[0]
-            v_fit = fit(data.alpha, m_row.H, m_row.G)
+            v_fit = fit_y(data.alpha, m_row.H, m_row.G)
             ax.plot(data.alpha, v_fit, "--")
             ax.plot(data.alpha, data.v, marker="o", linestyle="None")
         return ax
