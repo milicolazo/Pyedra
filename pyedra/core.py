@@ -50,10 +50,10 @@ class PyedraFitDataFrame:
         """Return a graph."""
         noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
 
-        def MODEL(x, H, G):
+        def modelHG(alpha, H, G):
             y = H - 2.5 * np.log10(
-                (1 - G) * np.exp(-3.33 * np.tan(x / 2) ** 0.63)
-                + G * np.exp(-1.87 * np.tan(x / 2) ** 1.22)
+                (1 - G) * np.exp(-3.33 * np.tan(alpha / 2) ** 0.63)
+                + G * np.exp(-1.87 * np.tan(alpha / 2) ** 1.22)
             )
             return y
 
@@ -65,12 +65,11 @@ class PyedraFitDataFrame:
         ax.set_xlabel("Phase angle")
         ax.set_ylabel("V")
 
-        for idx in noob.id:
-            data = df[df["id"] == idx]
-            modely = MODEL(
-                data.alpha * np.pi / 180, HG_fit(data).H[0], HG_fit(data).G[0]
-            )
-            ax.plot(data.alpha, modely, "--")
+        for idx, id in enumerate(noob.id):
+            data = df[df["id"] == id]
+            x = data.alpha * np.pi / 180
+            HGfit = modelHG(x, self.model_df.H[idx], self.model_df.G[idx])
+            ax.plot(data.alpha, HGfit, "--")
             ax.plot(data.alpha, data.v, marker="o", linestyle="None")
         return ax
 
