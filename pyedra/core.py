@@ -70,8 +70,15 @@ class PyedraFitDataFrame:
             data = df[df["id"] == n_row.id]
             m_row = self.model_df[self.model_df.id == n_row.id].iloc[0]
             v_fit = fit_y(data.alpha, m_row.H, m_row.G)
-            ax.plot(data.alpha, v_fit, "--")
-            ax.plot(data.alpha, data.v, marker="o", linestyle="None")
+            ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
+            ax.plot(
+                data.alpha,
+                data.v,
+                marker="o",
+                linestyle="None",
+                label=f"Data {int(m_row.id)}",
+            )
+        ax.legend(bbox_to_anchor=(1.05, 1))
         return ax
 
 
