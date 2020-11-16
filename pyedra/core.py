@@ -48,7 +48,6 @@ class PyedraFitDataFrame:
 
     def plot(self, df, ax=None, **kwargs):
         """Return a graph."""
-        noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
 
         def fit_y(alpha, H, G):
             x = alpha * np.pi / 180
@@ -66,9 +65,8 @@ class PyedraFitDataFrame:
         ax.set_xlabel("Phase angle")
         ax.set_ylabel("V")
 
-        for idx, n_row in noob.iterrows():
-            data = df[df["id"] == n_row.id]
-            m_row = self.model_df[self.model_df.id == n_row.id].iloc[0]
+        for idx, m_row in self.model_df.iterrows():
+            data = df[df["id"] == m_row.id]
             v_fit = fit_y(data.alpha, m_row.H, m_row.G)
             ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
             ax.plot(
