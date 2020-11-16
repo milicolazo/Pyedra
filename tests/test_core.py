@@ -31,7 +31,11 @@ def carbognani2019():
     return pyedra.datasets.load_carbognani2019()
 
 
-raiser = pd.DataFrame({"id": {0: 85}, "alpha": {0: 5}, "v": {0: 8}})
+@pytest.fixture(scope="session")
+def bad_data():
+    return pd.DataFrame({"id": {0: 85}, "alpha": {0: 5}, "v": {0: 8}})
+
+
 # =============================================================================
 # TESTS
 # =============================================================================
@@ -80,19 +84,19 @@ def test_PyedraFitDataFrame(carbognani2019):
     np.testing.assert_array_equal(pdf.G, pdf.model_df.G)
 
 
-def test_raises_HG():
+def test_raises_HG(bad_data):
     with pytest.raises(ValueError):
-        pyedra.HG_fit(raiser)
+        pyedra.HG_fit(bad_data)
 
 
-def test_raises_HG1G2():
+def test_raises_HG1G2(bad_data):
     with pytest.raises(ValueError):
-        pyedra.HG1G2_fit(raiser)
+        pyedra.HG1G2_fit(bad_data)
 
 
-def test_raises_Shev():
+def test_raises_Shev(bad_data):
     with pytest.raises(ValueError):
-        pyedra.Shev_fit(raiser)
+        pyedra.Shev_fit(bad_data)
 
 
 def test_obs_counter(carbognani2019):
