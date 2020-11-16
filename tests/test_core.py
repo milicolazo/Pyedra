@@ -11,7 +11,6 @@
 # IMPORTS
 # ======================================================================
 
-import matplotlib.pyplot as plt
 from matplotlib.testing.decorators import check_figures_equal
 
 import numpy as np
@@ -58,15 +57,20 @@ def test_plot_HG_fit(carbognani2019, fig_test, fig_ref):
             + G * np.exp(-1.87 * np.tan(x / 2) ** 1.22)
         )
         return y
-    
+
     for idx, m_row in pdf.iterrows():
         data = carbognani2019[carbognani2019["id"] == m_row.id]
         v_fit = fit_y(data.alpha, m_row.H, m_row.G)
         exp_ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
-        exp_ax.plot(data.alpha, data.v, marker="o", linestyle="None",
-                label=f"Data {int(m_row.id)}",
-                )
+        exp_ax.plot(
+            data.alpha,
+            data.v,
+            marker="o",
+            linestyle="None",
+            label=f"Data {int(m_row.id)}",
+        )
     exp_ax.legend(bbox_to_anchor=(1.05, 1))
+
 
 def test_PyedraFitDataFrame(carbognani2019):
     pdf = pyedra.HG_fit(carbognani2019)
