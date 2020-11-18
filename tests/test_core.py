@@ -76,6 +76,17 @@ def test_plot_HG_fit(carbognani2019, fig_test, fig_ref):
     exp_ax.legend(bbox_to_anchor=(1.05, 1))
 
 
+@check_figures_equal()
+def test_plot_DataFrame_hist(carbognani2019, fig_test, fig_ref):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    exp_ax = fig_ref.subplots()
+    pdf.model_df.plot.hist(ax=exp_ax)
+
+    test_ax = fig_test.subplots()
+    pdf.plot.hist(ax=test_ax)
+
+
 def test_PyedraFitDataFrame(carbognani2019):
     pdf = pyedra.HG_fit(carbognani2019)
 

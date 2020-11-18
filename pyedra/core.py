@@ -96,7 +96,7 @@ class HGPlot:
     model_df = attr.ib()
 
     def __call__(self, df, ax=None, **kwargs):
-        """``HGPlot() <==> HGPlot.__call__``."""
+        """``plot() <==> plot.__call__``."""
 
         def fit_y(alpha, H, G):
             x = alpha * np.pi / 180
@@ -128,6 +128,10 @@ class HGPlot:
 
         ax.legend(bbox_to_anchor=(1.05, 1))
         return ax
+
+    def __getattr__(self, kind):
+        """Make plots."""
+        return getattr(self.model_df.plot, kind)
 
 
 def HG_fit(df):
