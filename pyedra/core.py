@@ -91,7 +91,7 @@ def _HGmodel(x, a, b):
 
 @attr.s(frozen=True)
 class HGPlot:
-    """Plot for HG fit."""
+    """Plots for HG fit."""
 
     default = "curvefit"
 
