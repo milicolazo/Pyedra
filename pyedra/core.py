@@ -42,42 +42,11 @@ class PyedraFitDataFrame:
 
     model_df = attr.ib()
 
+    plot = attr.ib()
+
     def __getattr__(self, a):
         """Return the dataframe after applying the "a" function."""
         return getattr(self.model_df, a)
-
-    def plot(self, df, ax=None, **kwargs):
-        """Return a graph."""
-
-        def fit_y(alpha, H, G):
-            x = alpha * np.pi / 180
-            y = H - 2.5 * np.log10(
-                (1 - G) * np.exp(-3.33 * np.tan(x / 2) ** 0.63)
-                + G * np.exp(-1.87 * np.tan(x / 2) ** 1.22)
-            )
-            return y
-
-        if ax is None:
-            ax = plt.gca()
-
-        ax.invert_yaxis()
-        ax.set_title("Phase curves")
-        ax.set_xlabel("Phase angle")
-        ax.set_ylabel("V")
-
-        for idx, m_row in self.model_df.iterrows():
-            data = df[df["id"] == m_row.id]
-            v_fit = fit_y(data.alpha, m_row.H, m_row.G)
-            ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
-            ax.plot(
-                data.alpha,
-                data.v,
-                marker="o",
-                linestyle="None",
-                label=f"Data {int(m_row.id)}",
-            )
-        ax.legend(bbox_to_anchor=(1.05, 1))
-        return ax
 
 
 # ============================================================================
@@ -118,6 +87,47 @@ def _HGmodel(x, a, b):
     return a * np.exp(-3.33 * np.tan(x / 2) ** 0.63) + b * np.exp(
         -1.87 * np.tan(x / 2) ** 1.22
     )
+
+
+@attr.s(frozen=True)
+class HGPlot:
+    """Plot for HG fit."""
+
+    model_df = attr.ib()
+
+    def __call__(self, df, ax=None, **kwargs):
+        """``HGPlot() <==> HGPlot.__call__``."""
+
+        def fit_y(alpha, H, G):
+            x = alpha * np.pi / 180
+            y = H - 2.5 * np.log10(
+                (1 - G) * np.exp(-3.33 * np.tan(x / 2) ** 0.63)
+                + G * np.exp(-1.87 * np.tan(x / 2) ** 1.22)
+            )
+            return y
+
+        if ax is None:
+            ax = plt.gca()
+
+        ax.invert_yaxis()
+        ax.set_title("Phase curves")
+        ax.set_xlabel("Phase angle")
+        ax.set_ylabel("V")
+
+        for idx, m_row in self.model_df.iterrows():
+            data = df[df["id"] == m_row.id]
+            v_fit = fit_y(data.alpha, m_row.H, m_row.G)
+            ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
+            ax.plot(
+                data.alpha,
+                data.v,
+                marker="o",
+                linestyle="None",
+                label=f"Data {int(m_row.id)}",
+            )
+
+        ax.legend(bbox_to_anchor=(1.05, 1))
+        return ax
 
 
 def HG_fit(df):
@@ -209,7 +219,9 @@ def HG_fit(df):
         }
     )
 
-    return PyedraFitDataFrame(model_df=model_df)
+    plotter = HGPlot(model_df=model_df)
+
+    return PyedraFitDataFrame(model_df=model_df, plot=plotter)
 
 
 # ============================================================================
@@ -314,7 +326,7 @@ def Shev_fit(df):
         }
     )
 
-    return PyedraFitDataFrame(model_df=model_df)
+    return PyedraFitDataFrame(model_df=model_df, plot=None)
 
 
 # ============================================================================
@@ -454,4 +466,4 @@ def HG1G2_fit(df):
         }
     )
 
-    return PyedraFitDataFrame(model_df=model_df)
+    return PyedraFitDataFrame(model_df=model_df, plot=None)
