@@ -87,6 +87,38 @@ def test_plot_DataFrame_hist(carbognani2019, fig_test, fig_ref):
     pdf.plot.hist(ax=test_ax)
 
 
+@check_figures_equal()
+def test_plot_HG_fit_curvefit(carbognani2019, fig_test, fig_ref):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    exp_ax = fig_ref.subplots()
+    pdf.plot(carbognani2019, kind="curvefit", ax=exp_ax)
+
+    test_ax = fig_test.subplots()
+    pdf.plot.curvefit(carbognani2019, ax=test_ax)
+
+
+def test_plot_invalid_plot_name(carbognani2019):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    with pytest.raises(ValueError):
+        pdf.plot(carbognani2019, kind="model_df")
+
+    with pytest.raises(ValueError):
+        pdf.plot(carbognani2019, kind="_foo")
+
+
+@check_figures_equal()
+def test_plot_HG_fit_DataFrame_hist_by_name(carbognani2019, fig_test, fig_ref):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    exp_ax = fig_ref.subplots()
+    pdf.model_df.plot(kind="hist", ax=exp_ax)
+
+    test_ax = fig_test.subplots()
+    pdf.plot(df=carbognani2019, kind="hist", ax=test_ax)
+
+
 def test_PyedraFitDataFrame(carbognani2019):
     pdf = pyedra.HG_fit(carbognani2019)
 

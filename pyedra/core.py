@@ -93,10 +93,32 @@ def _HGmodel(x, a, b):
 class HGPlot:
     """Plot for HG fit."""
 
+    default = "curvefit"
+
     model_df = attr.ib()
 
-    def __call__(self, df, ax=None, **kwargs):
-        """``plot() <==> plot.__call__``."""
+    def curvefit(self, df, ax=None, **kwargs):
+        """Plot the phase function using the HG model.
+
+        Parameters
+        ----------
+        df: ``pandas.DataFrame``
+            The dataframe must contain 3 columns as indicated here:
+            id (mpc number of the asteroid), alpha (phase angle) and
+            v (reduced magnitude in Johnson's V filter).
+
+        ax: axes object, optional
+
+        Other Parameters
+        ----------------
+        **kwargs
+            `~matplotlib.patches.Patch` properties
+
+        Return
+        ------
+        out: plot
+            Matplotlib plot
+        """
 
         def fit_y(alpha, H, G):
             x = alpha * np.pi / 180
@@ -128,6 +150,22 @@ class HGPlot:
 
         ax.legend(bbox_to_anchor=(1.05, 1))
         return ax
+
+    def __call__(self, df, kind=None, **kwargs):
+        """``plot() <==> plot.__call__``."""
+        if kind is None:
+            kind = "curvefit"
+
+        if kind is not None and (
+            kind.startswith("_") or not hasattr(self, kind)
+        ):
+            raise ValueError(f"Ivalid plot method '{kind}'")
+
+        method = getattr(self, kind or HGPlot.default)
+
+        if not callable(method):
+            raise ValueError(f"Ivalid plot method '{kind}'")
+        return method(df, **kwargs)
 
     def __getattr__(self, kind):
         """Make plots."""
