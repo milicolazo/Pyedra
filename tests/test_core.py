@@ -46,7 +46,7 @@ def test_plot_HG_fit(carbognani2019, fig_test, fig_ref):
     pdf = pyedra.HG_fit(carbognani2019)
 
     test_ax = fig_test.subplots()
-    pdf.plot(carbognani2019, ax=test_ax)
+    pdf.plot(df=carbognani2019, ax=test_ax)
 
     exp_ax = fig_ref.subplots()
     exp_ax.invert_yaxis()
@@ -92,20 +92,23 @@ def test_plot_HG_fit_curvefit(carbognani2019, fig_test, fig_ref):
     pdf = pyedra.HG_fit(carbognani2019)
 
     exp_ax = fig_ref.subplots()
-    pdf.plot(carbognani2019, kind="curvefit", ax=exp_ax)
+    pdf.plot(df=carbognani2019, kind="curvefit", ax=exp_ax)
 
     test_ax = fig_test.subplots()
-    pdf.plot.curvefit(carbognani2019, ax=test_ax)
+    pdf.plot.curvefit(df=carbognani2019, ax=test_ax)
 
 
 def test_plot_invalid_plot_name(carbognani2019):
     pdf = pyedra.HG_fit(carbognani2019)
 
-    with pytest.raises(ValueError):
-        pdf.plot(carbognani2019, kind="model_df")
+    with pytest.raises(AttributeError):
+        pdf.plot(df=carbognani2019, kind="model_df")
 
-    with pytest.raises(ValueError):
-        pdf.plot(carbognani2019, kind="_foo")
+    with pytest.raises(AttributeError):
+        pdf.plot(df=carbognani2019, kind="_foo")
+
+    with pytest.raises(AttributeError):
+        pdf.plot(df=carbognani2019, kind="foo")
 
 
 @check_figures_equal()
@@ -116,7 +119,7 @@ def test_plot_HG_fit_DataFrame_hist_by_name(carbognani2019, fig_test, fig_ref):
     pdf.model_df.plot(kind="hist", ax=exp_ax)
 
     test_ax = fig_test.subplots()
-    pdf.plot(df=carbognani2019, kind="hist", ax=test_ax)
+    pdf.plot(kind="hist", ax=test_ax)
 
 
 def test_PyedraFitDataFrame(carbognani2019):
