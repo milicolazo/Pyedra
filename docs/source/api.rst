@@ -22,6 +22,30 @@ Module ``pyedra.core``
    :members:
    :undoc-members:
    :show-inheritance: bysource
+
+Module ``pyedra.hg1g2_model``
+-----------------------------
+
+.. automodule:: pyedra.hg1g2_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module ``pyedra.hg_model``
+--------------------------
+
+.. automodule:: pyedra.hg_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module ``pyedra.shevchenko_model``
+----------------------------------
+
+.. automodule:: pyedra.shevchenko_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
    
 Module ``pyedra.datasets``
 --------------------------
