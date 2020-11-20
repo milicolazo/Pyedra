@@ -41,9 +41,6 @@ setup(
     packages=[
         "pyedra",
         "pyedra.datasets",
-        "pyedra.hg_model",
-        "pyedra.shevchenko_model",
-        "pyedra.hg1g2_model",
     ],
     classifiers=["Programming Language :: Python :: 3.8"],
     license="The MIT License",

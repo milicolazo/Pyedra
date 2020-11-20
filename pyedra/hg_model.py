@@ -34,6 +34,8 @@ import pandas as pd
 
 import scipy.optimize as optimization
 
+from . import core
+
 # =============================================================================
 # CLASSES AND FUNCTIONS
 # =============================================================================
@@ -46,7 +48,7 @@ def _HGmodel(x, a, b):
 
 
 @attr.s(frozen=True)
-class HGPlot(BasePlot):
+class HGPlot(core.BasePlot):
     """Plots for HG fit."""
 
     def curvefit(self, df, ax=None, **kwargs):
@@ -133,7 +135,7 @@ def HG_fit(df):
        Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
        Icarus, 209, 542.
     """
-    lt = obs_counter(df, 2)
+    lt = core.obs_counter(df, 2)
     if len(lt):
         lt_str = " - ".join(str(idx) for idx in lt)
         raise ValueError(
@@ -196,4 +198,4 @@ def HG_fit(df):
 
     plotter = HGPlot(model_df=model_df)
 
-    return PyedraFitDataFrame(model_df=model_df, plot=plotter)
+    return core.PyedraFitDataFrame(model_df=model_df, plot=plotter)

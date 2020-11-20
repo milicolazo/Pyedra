@@ -29,7 +29,7 @@ import scipy
 import scipy.interpolate
 import scipy.optimize as optimization
 
-from . import datasets
+from . import core, datasets
 
 # ============================================================================
 # CLASSES AND FUNCTIONS
@@ -42,7 +42,7 @@ def _HG1G2_model(X, a, b, c):
 
 
 @attr.s(frozen=True)
-class HG1G2Plot(BasePlot):
+class HG1G2Plot(core.BasePlot):
     """Plots for HG1G2 fit."""
 
     def curvefit(self, df, ax=None, **kwargs):
@@ -152,7 +152,7 @@ def HG1G2_fit(df):
        Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
        Icarus, 209, 542.
     """
-    lt = obs_counter(df, 3)
+    lt = core.obs_counter(df, 3)
     if len(lt):
         lt_str = " - ".join(str(idx) for idx in lt)
         raise ValueError(
@@ -252,4 +252,4 @@ def HG1G2_fit(df):
 
     plotter = HG1G2Plot(model_df=model_df)
 
-    return PyedraFitDataFrame(model_df=model_df, plot=plotter)
+    return core.PyedraFitDataFrame(model_df=model_df, plot=plotter)

@@ -34,6 +34,8 @@ import pandas as pd
 
 import scipy.optimize as optimization
 
+from . import core
+
 # =============================================================================
 # CLASSES AND FUNCTIONS
 # =============================================================================
@@ -44,7 +46,7 @@ def _Shev_model(x, V_lin, b, c):
 
 
 @attr.s(frozen=True)
-class ShevPlot(BasePlot):
+class ShevPlot(core.BasePlot):
     """Plots for Shevchenko fit."""
 
     def curvefit(self, df, ax=None, **kwargs):
@@ -135,7 +137,7 @@ def Shev_fit(df):
     .. [4] Belskaya, I. N., Shevchenko, V. G., 2000. Opposition effect
        of asteroids. Icarus 147, 94-105.
     """
-    lt = obs_counter(df, 3)
+    lt = core.obs_counter(df, 3)
     if len(lt):
         lt_str = " - ".join(str(idx) for idx in lt)
         raise ValueError(
@@ -194,4 +196,4 @@ def Shev_fit(df):
 
     plotter = ShevPlot(model_df=model_df)
 
-    return PyedraFitDataFrame(model_df=model_df, plot=plotter)
+    return core.PyedraFitDataFrame(model_df=model_df, plot=plotter)
