@@ -284,7 +284,7 @@ class ShevPlot(BasePlot):
     """Plots for Shevchenko fit."""
 
     def curvefit(self, df, ax=None, **kwargs):
-        """Plot the phase function using the HG model.
+        """Plot the phase function using the Shev model.
 
         Parameters
         ----------
@@ -443,6 +443,88 @@ def _HG1G2_model(X, a, b, c):
     return a * x + b * y + c * z
 
 
+@attr.s(frozen=True)
+class HG1G2Plot(BasePlot):
+    """Plots for HG1G2 fit."""
+
+    def curvefit(self, df, ax=None, **kwargs):
+        """Plot the phase function using the HG1G2 model.
+
+        Parameters
+        ----------
+        df : ``pandas.DataFrame``
+            The dataframe must contain 3 columns as indicated here:
+            id (mpc number of the asteroid), alpha (phase angle) and
+            v (reduced magnitude in Johnson's V filter).
+
+        ax : ``matplotlib.pyplot.Axis``, (optional)
+            Matplotlib axis
+
+        **kwargs :
+            Extra variables are not used
+
+
+        Return
+        ------
+        ``matplotlib.pyplot.Axis`` :
+            The axis where the method draws.
+
+        """
+        penttila2016 = datasets.load_penttila2016()
+
+        alphap = penttila2016["alpha"].to_numpy()
+        phi1 = penttila2016["phi1"].to_numpy()
+        phi2 = penttila2016["phi2"].to_numpy()
+        phi3 = penttila2016["phi3"].to_numpy()
+
+        y_interp1 = scipy.interpolate.interp1d(alphap, phi1)
+        y_interp2 = scipy.interpolate.interp1d(alphap, phi2)
+        y_interp3 = scipy.interpolate.interp1d(alphap, phi3)
+
+        if ax is None:
+            ax = plt.gca()
+
+        ax.invert_yaxis()
+        ax.set_title("Phase curves")
+        ax.set_xlabel("Phase angle")
+        ax.set_ylabel("V")
+
+        for idx, m_row in self.model_df.iterrows():
+            data = df[df["id"] == m_row.id]
+
+            def fit_y(d, e, f):
+                y = d - 2.5 * np.log10(e * fi1 + f * fi2 + (1 - e - f) * fi3)
+                return y
+
+            fi1 = np.array([])
+            fi2 = np.array([])
+            fi3 = np.array([])
+
+            for alpha_b in data.alpha:
+
+                p1 = y_interp1(alpha_b)
+                fi1 = np.append(fi1, p1)
+
+                p2 = y_interp2(alpha_b)
+                fi2 = np.append(fi2, p2)
+
+                p3 = y_interp3(alpha_b)
+                fi3 = np.append(fi3, p3)
+
+            v_fit = fit_y(m_row.H12, m_row.G1, m_row.G2)
+            ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
+            ax.plot(
+                data.alpha,
+                data.v,
+                marker="o",
+                linestyle="None",
+                label=f"Data {int(m_row.id)}",
+            )
+
+        ax.legend(bbox_to_anchor=(1.05, 1))
+        return ax
+
+
 def HG1G2_fit(df):
     """Fit (H-G1-G2) system to data from table.
 
@@ -570,4 +652,6 @@ def HG1G2_fit(df):
         }
     )
 
-    return PyedraFitDataFrame(model_df=model_df, plot=None)
+    plotter = HG1G2Plot(model_df=model_df)
+
+    return PyedraFitDataFrame(model_df=model_df, plot=plotter)
