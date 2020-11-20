@@ -51,6 +51,8 @@ def _HGmodel(x, a, b):
 class HGPlot(core.BasePlot):
     """Plots for HG fit."""
 
+    default_plot_kind = "curvefit"
+
     def curvefit(self, df, ax=None, **kwargs):
         """Plot the phase function using the HG model.
 
@@ -91,7 +93,7 @@ class HGPlot(core.BasePlot):
         ax.set_xlabel("Phase angle")
         ax.set_ylabel("V")
 
-        for idx, m_row in self.model_df.iterrows():
+        for idx, m_row in self.pdf.model_df.iterrows():
             data = df[df["id"] == m_row.id]
             v_fit = fit_y(data.alpha, m_row.H, m_row.G)
             ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
@@ -196,6 +198,6 @@ def HG_fit(df):
         }
     )
 
-    plotter = HGPlot(model_df=model_df)
-
-    return core.PyedraFitDataFrame(model_df=model_df, plot=plotter)
+    return core.PyedraFitDataFrame(
+        model_df=model_df, plot_cls=HGPlot, model="HG"
+    )
