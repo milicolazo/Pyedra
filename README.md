@@ -8,15 +8,18 @@
 Phase curves of asteroids are very important for the scientific community as they can provide information needed for diameter and albedo estimates. Given the large amount of surveys currently being carried out and planned for the next few years, we believe it is necessary to have a tool capable of processing and providing useful information for such an amount of observational data.
 
 ## Features
-Pyedra currently has three functions, each of which adjusts a different phase function model. The input file must be a .csv file with three columns: id (mpc number), alpha (phase angle) and v (reduced magnitude in Johnson's V filter).
+The input file must be a .csv file with three columns: id (mpc number), alpha (phase angle) and v (reduced magnitude in Johnson's V filter).
+
+Pyedra currently has three functions, each of which adjusts a different phase function model.
 The modules are:
 
-- **H-G_fit**: adjusts the H-G biparametric function to the data set. 
+- **hg_model**: adjusts the H-G biparametric function to the data set. 
 
-- **Shev_fit**: adjusts the Shevchenko triparametric function to the data set.
+- **shevchenko_model**: adjusts the Shevchenko triparametric function to the data set.
 
-- **HG1G2_fit**: adjusts the triparametric function H-G1-G2 to the data set.
+- **hg1g2_model**: adjusts the triparametric function H-G1-G2 to the data set.
 
+In addition, the data input can be plotted with the chosen fit.
 --------------------------------------------------------------------------------
 
 ## Requirements
