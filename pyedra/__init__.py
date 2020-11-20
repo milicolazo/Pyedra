@@ -22,3 +22,9 @@ Implementation of phase function for asteroids in Python.
 # =============================================================================
 
 from .core import *  # noqa
+
+from .hg_model import *  # noqa
+
+from .shevchenko_model import *  # noqa
+
+from .hg1g2_model import *  # noqa
