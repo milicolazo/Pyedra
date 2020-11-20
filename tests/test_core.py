@@ -11,13 +11,40 @@
 # IMPORTS
 # ======================================================================
 
+import attr
+
 import numpy as np
 
-import pyedra.datasets
+import pyedra
+
+import pytest
+
 
 # =============================================================================
 # TESTS
 # =============================================================================
+
+
+def test_metadata():
+    original = {"a": 1, "b": 2}
+
+    metadata = pyedra.MetaData(original)
+    assert metadata.a == metadata["a"] == original["a"]
+    assert metadata.b == metadata["b"] == original["b"]
+
+    with pytest.raises(KeyError):
+        metadata["foo"]
+    with pytest.raises(KeyError):
+        metadata["foo"]
+
+    assert len(metadata) == len(original)
+    assert list(iter(metadata)) == list(iter(original))
+
+    with pytest.raises(TypeError):
+        metadata["foo"] = 1
+
+    with pytest.raises(attr.exceptions.FrozenInstanceError):
+        metadata.foo = 1
 
 
 def test_obs_counter(carbognani2019):
