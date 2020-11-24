@@ -15,6 +15,10 @@ Pyedra's documentation
 .. image:: https://readthedocs.org/projects/pyedra/badge/?version=latest
     :target: https://pyedra.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+    
+.. image:: https://img.shields.io/badge/DiSoftCompCi-FAMAF-ffda00
+   :target: https://github.com/leliel12/diseno_sci_sfw
+   :alt: Curso doctoral FAMAF: Diseño de software para cómputo científico
 
 
 **Pyedra** is a python library that allows you to fit three different models of asteroid phase functions to your observations.

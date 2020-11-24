@@ -40,6 +40,8 @@ from . import core, datasets
 class HG1G2Plot(core.BasePlot):
     """Plots for HG1G2 fit."""
 
+    default_plot_kind = "curvefit"
+
     def curvefit(self, df, ax=None, **kwargs):
         """Plot the phase function using the HG1G2 model.
 
@@ -63,17 +65,6 @@ class HG1G2Plot(core.BasePlot):
             The axis where the method draws.
 
         """
-        penttila2016 = datasets.load_penttila2016()
-
-        alphap = penttila2016["alpha"].to_numpy()
-        phi1 = penttila2016["phi1"].to_numpy()
-        phi2 = penttila2016["phi2"].to_numpy()
-        phi3 = penttila2016["phi3"].to_numpy()
-
-        y_interp1 = scipy.interpolate.interp1d(alphap, phi1)
-        y_interp2 = scipy.interpolate.interp1d(alphap, phi2)
-        y_interp3 = scipy.interpolate.interp1d(alphap, phi3)
-
         if ax is None:
             ax = plt.gca()
 
@@ -82,7 +73,7 @@ class HG1G2Plot(core.BasePlot):
         ax.set_xlabel("Phase angle")
         ax.set_ylabel("V")
 
-        for idx, m_row in self.model_df.iterrows():
+        for idx, m_row in self.pdf.iterrows():
             data = df[df["id"] == m_row.id]
 
             def fit_y(d, e, f):
@@ -95,13 +86,13 @@ class HG1G2Plot(core.BasePlot):
 
             for alpha_b in data.alpha:
 
-                p1 = y_interp1(alpha_b)
+                p1 = self.pdf.metadata.y_interp1(alpha_b)
                 fi1 = np.append(fi1, p1)
 
-                p2 = y_interp2(alpha_b)
+                p2 = self.pdf.metadata.y_interp2(alpha_b)
                 fi2 = np.append(fi2, p2)
 
-                p3 = y_interp3(alpha_b)
+                p3 = self.pdf.metadata.y_interp3(alpha_b)
                 fi3 = np.append(fi3, p3)
 
             v_fit = fit_y(m_row.H12, m_row.G1, m_row.G2)
@@ -255,19 +246,12 @@ def HG1G2_fit(df):
         }
     )
 
-    plotter = HG1G2Plot(model_df=model_df)
-
-    pentilla_cache = {
-        "alpha": penttila2016["alpha"].to_numpy(),
-        "phi1": penttila2016["phi1"].to_numpy(),
-        "phi2": penttila2016["phi2"].to_numpy(),
-        "phi3": penttila2016["phi3"].to_numpy(),
-        "y_interp1": scipy.interpolate.interp1d(alpha, phi1),
-        "y_interp2": scipy.interpolate.interp1d(alpha, phi2),
-        "y_interp3": scipy.interpolate.interp1d(alpha, phi3),
+    metadata = {
+        "y_interp1": y_interp1,
+        "y_interp2": y_interp2,
+        "y_interp3": y_interp3,
     }
-    metadata = {"pentilla2016": core.MetaData(pentilla_cache)}
 
     return core.PyedraFitDataFrame(
-        model_df=model_df, metadata=metadata, plot=plotter
+        model_df=model_df, plot_cls=HG1G2Plot, model="HG1G2", metadata=metadata
     )

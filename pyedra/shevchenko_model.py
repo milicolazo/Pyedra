@@ -45,6 +45,8 @@ from . import core
 class ShevPlot(core.BasePlot):
     """Plots for Shevchenko fit."""
 
+    default_plot_kind = "curvefit"
+
     def curvefit(self, df, ax=None, **kwargs):
         """Plot the phase function using the Shev model.
 
@@ -81,7 +83,7 @@ class ShevPlot(core.BasePlot):
         ax.set_xlabel("Phase angle")
         ax.set_ylabel("V")
 
-        for idx, m_row in self.model_df.iterrows():
+        for idx, m_row in self.pdf.model_df.iterrows():
             data = df[df["id"] == m_row.id]
             v_fit = fit_y(data.alpha, m_row.V_lin, m_row.b, m_row.c)
             ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
@@ -199,6 +201,8 @@ def Shev_fit(df):
         }
     )
 
-    plotter = ShevPlot(model_df=model_df)
-
-    return core.PyedraFitDataFrame(model_df=model_df, plot=plotter)
+    return core.PyedraFitDataFrame(
+        model_df=model_df,
+        plot_cls=ShevPlot,
+        model="Shevchenko",
+    )

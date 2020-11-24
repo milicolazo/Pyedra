@@ -17,9 +17,12 @@
 # IMPORTS
 # =============================================================================
 
+import abc
 from collections.abc import Mapping
 
 import attr
+
+import pandas as pd
 
 # ============================================================================
 # CLASSES
@@ -69,9 +72,16 @@ class MetaData(Mapping):
 class PyedraFitDataFrame:
     """Initialize a dataframe model_df to which we can apply function a."""
 
-    model_df = attr.ib()
-    plot = attr.ib()
+    model = attr.ib(validator=attr.validators.instance_of(str))
+    model_df = attr.ib(validator=attr.validators.instance_of(pd.DataFrame))
+    plot_cls = attr.ib()
+
     metadata = attr.ib(factory=MetaData, converter=MetaData)
+    plot = attr.ib(init=False)
+
+    @plot.default
+    def _plot_default(self):
+        return self.plot_cls(self)
 
     def __getattr__(self, a):
         """getattr(x, y) <==> x.__getattr__(y) <==> getattr(x, y)."""
@@ -79,12 +89,14 @@ class PyedraFitDataFrame:
 
 
 @attr.s(frozen=True)
-class BasePlot:
+class BasePlot(abc.ABC):
     """Plots for HG fit."""
 
-    model_df = attr.ib()
+    pdf = attr.ib()
 
-    default_plot_kind = "curvefit"
+    @abc.abstractproperty
+    def default_plot_kind(self):
+        """Return the default plot to be rendered."""
 
     def __call__(self, kind=None, **kwargs):
         """``plot() <==> plot.__call__()``."""
@@ -102,7 +114,7 @@ class BasePlot:
 
     def __getattr__(self, kind):
         """getattr(x, y) <==> x.__getattr__(y) <==> getattr(x, y)."""
-        return getattr(self.model_df.plot, kind)
+        return getattr(self.pdf.model_df.plot, kind)
 
 
 # ============================================================================

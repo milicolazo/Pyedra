@@ -37,6 +37,7 @@ def test_metadata():
     with pytest.raises(KeyError):
         metadata["foo"]
 
+    assert repr(metadata) == f"Metadata({repr(original)})"
     assert len(metadata) == len(original)
     assert list(iter(metadata)) == list(iter(original))
 
