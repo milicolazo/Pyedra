@@ -17,6 +17,9 @@
 # IMPORTS
 # ======================================================================
 
+import os
+import pathlib
+
 import ez_setup
 
 ez_setup.use_setuptools()
@@ -24,16 +27,34 @@ ez_setup.use_setuptools()
 from setuptools import setup  # noqa
 
 # =============================================================================
-# FUNCTIONS
+# CONSTANTS
 # =============================================================================
 
-VERSION = "0.0.1"
+PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
+
+
+REQUIREMENTS = ["numpy", "pandas", "scipy", "attr", "matplotlib"]
+
+with open(PATH / "pyedra" / "__init__.py") as fp:
+    for line in fp.readlines():
+        if line.startswith("__version__ = "):
+            VERSION = line.split("=", 1)[-1].replace('"', "").strip()
+            break
+
+
+with open("README.md") as fp:
+    LONG_DESCRIPTION = fp.read()
+
+
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
 
 setup(
     name="Pyedra",
     version=VERSION,
     description="Implementation of phase function for asteroids in Python",
-    long_description=open("README.md").read(),
+    long_description=LONG_DESCRIPTION,
     author="Milagros Colazo",
     author_email="milirita.colazovinovo@gmail.com",
     url="https://github.com/milicolazo/Pyedra",
@@ -42,7 +63,18 @@ setup(
         "pyedra",
         "pyedra.datasets",
     ],
-    classifiers=["Programming Language :: Python :: 3.8"],
     license="The MIT License",
-    install_requires=["numpy", "pandas", "scipy", "attr", "matplotlib"],
+    install_requires=REQUIREMENTS,
+    keywords=["pyedra", "asteroid", "phase function"],
+    classifiers=[
+        "Development Status :: 1 - Beta",
+        "Intended Audience :: Education",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Topic :: Scientific/Engineering",
+    ],
 )
