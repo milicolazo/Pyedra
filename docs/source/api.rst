@@ -25,37 +25,37 @@ Module ``pyedra.core``
 
 .. automodule:: pyedra.core
    :members:
-   :undoc-members:
-   :show-inheritance: bysource
+   :show-inheritance:
+   :member-order: bysource
 
 Module ``pyedra.hg1g2_model``
 -----------------------------
 
 .. automodule:: pyedra.hg1g2_model
    :members:
-   :undoc-members:
-   :show-inheritance: bysource
+   :show-inheritance:
+   :member-order: bysource
 
 Module ``pyedra.hg_model``
 --------------------------
 
 .. automodule:: pyedra.hg_model
    :members:
-   :undoc-members:
-   :show-inheritance: bysource
+   :show-inheritance:
+   :member-order: bysource
 
 Module ``pyedra.shevchenko_model``
 ----------------------------------
 
 .. automodule:: pyedra.shevchenko_model
    :members:
-   :undoc-members:
-   :show-inheritance: bysource
+   :show-inheritance:
+   :member-order: bysource
    
 Module ``pyedra.datasets``
 --------------------------
 
 .. automodule:: pyedra.datasets
    :members:
-   :undoc-members:
-   :show-inheritance: bysource
+   :show-inheritance:
+   :member-order: bysource
