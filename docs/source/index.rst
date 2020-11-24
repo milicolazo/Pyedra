@@ -19,7 +19,7 @@ Pyedra's documentation
 .. image:: https://readthedocs.org/projects/pyedra/badge/?version=latest
     :target: https://pyedra.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
-    
+
 .. image:: https://img.shields.io/badge/DiSoftCompCi-FAMAF-ffda00
    :target: https://github.com/leliel12/diseno_sci_sfw
    :alt: Curso doctoral FAMAF: Diseño de software para cómputo científico
@@ -46,11 +46,12 @@ https://github.com/milicolazo/Pyedra
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
-   
-   installation
-   license
-   api
+
+   installation.rst
    tutorial.ipynb
+   license.rst
+   api.rst
+
 
 
 Indices and tables

@@ -13,9 +13,18 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import pathlib
 import sys
 
-sys.path.insert(0, os.path.abspath('../..'))
+
+# this path is pointing to project/docs/source
+CURRENT_PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
+PYEDRA_PATH = CURRENT_PATH.parent.parent
+
+sys.path.insert(0, str(PYEDRA_PATH))
+
+
+import pyedra
 
 
 # -- Project information -----------------------------------------------------
@@ -25,7 +34,7 @@ copyright = '2020, Milagros Colazo'
 author = 'Milagros Colazo'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = pyedra.__version__
 
 
 # -- General configuration ---------------------------------------------------
