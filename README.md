@@ -1,5 +1,5 @@
 # Pyedra
-![logo](https://github.com/milicolazo/Pyedra/blob/master/res/Pyedra.png)
+![logo](https://github.com/milicolazo/Pyedra/blob/master/res/logo.png)
 
 [![Build Status](https://travis-ci.com/milicolazo/Pyedra.svg?branch=master)](https://travis-ci.com/milicolazo/Pyedra)
 [![Documentation Status](https://readthedocs.org/projects/pyedra/badge/?version=latest)](https://pyedra.readthedocs.io/en/latest/?badge=latest)
@@ -23,7 +23,7 @@ The modules are:
 - **hg1g2_model**: adjusts the triparametric function H-G1-G2 to the data set.
 
 
-In addition, the data input can be plotted with the chosen fit.
+In addition, the input data can be plotted with the chosen fit.
 
 
 --------------------------------------------------------------------------------
