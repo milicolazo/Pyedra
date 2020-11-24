@@ -32,13 +32,8 @@ import scipy.optimize as optimization
 from . import core, datasets
 
 # ============================================================================
-# CLASSES AND FUNCTIONS
+# CLASSES
 # ============================================================================
-
-
-def _HG1G2_model(X, a, b, c):
-    x, y, z = X
-    return a * x + b * y + c * z
 
 
 @attr.s(frozen=True)
@@ -121,6 +116,16 @@ class HG1G2Plot(core.BasePlot):
 
         ax.legend(bbox_to_anchor=(1.05, 1))
         return ax
+
+
+# ============================================================================
+# FUNCTIONS
+# ============================================================================
+
+
+def _HG1G2_model(X, a, b, c):
+    x, y, z = X
+    return a * x + b * y + c * z
 
 
 def HG1G2_fit(df):

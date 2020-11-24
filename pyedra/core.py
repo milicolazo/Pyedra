@@ -78,6 +78,33 @@ class PyedraFitDataFrame:
         return getattr(self.model_df, a)
 
 
+@attr.s(frozen=True)
+class BasePlot:
+    """Plots for HG fit."""
+
+    model_df = attr.ib()
+
+    default_plot_kind = "curvefit"
+
+    def __call__(self, kind=None, **kwargs):
+        """``plot() <==> plot.__call__()``."""
+        kind = self.default_plot_kind if kind is None else kind
+
+        if kind.startswith("_"):
+            raise AttributeError(f"Ivalid plot method '{kind}'")
+
+        method = getattr(self, kind)
+
+        if not callable(method):
+            raise AttributeError(f"Ivalid plot method '{kind}'")
+
+        return method(**kwargs)
+
+    def __getattr__(self, kind):
+        """getattr(x, y) <==> x.__getattr__(y) <==> getattr(x, y)."""
+        return getattr(self.model_df.plot, kind)
+
+
 # ============================================================================
 # FUNCTIONS
 # ============================================================================
@@ -105,30 +132,3 @@ def obs_counter(df, obs):
     df_cnt = df.groupby("id").count()
     lt_idx = df_cnt[df_cnt.alpha < obs].index
     return lt_idx.to_numpy()
-
-
-@attr.s(frozen=True)
-class BasePlot:
-    """Plots for HG fit."""
-
-    model_df = attr.ib()
-
-    default_plot_kind = "curvefit"
-
-    def __call__(self, kind=None, **kwargs):
-        """``plot() <==> plot.__call__()``."""
-        kind = self.default_plot_kind if kind is None else kind
-
-        if kind.startswith("_"):
-            raise AttributeError(f"Ivalid plot method '{kind}'")
-
-        method = getattr(self, kind)
-
-        if not callable(method):
-            raise AttributeError(f"Ivalid plot method '{kind}'")
-
-        return method(**kwargs)
-
-    def __getattr__(self, kind):
-        """getattr(x, y) <==> x.__getattr__(y) <==> getattr(x, y)."""
-        return getattr(self.model_df.plot, kind)

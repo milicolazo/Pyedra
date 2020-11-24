@@ -37,12 +37,8 @@ import scipy.optimize as optimization
 from . import core
 
 # =============================================================================
-# CLASSES AND FUNCTIONS
+# CLASSES
 # =============================================================================
-
-
-def _Shev_model(x, V_lin, b, c):
-    return V_lin + c * x - b / (1 + x)
 
 
 @attr.s(frozen=True)
@@ -99,6 +95,15 @@ class ShevPlot(core.BasePlot):
 
         ax.legend(bbox_to_anchor=(1.05, 1))
         return ax
+
+
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
+
+
+def _Shev_model(x, V_lin, b, c):
+    return V_lin + c * x - b / (1 + x)
 
 
 def Shev_fit(df):

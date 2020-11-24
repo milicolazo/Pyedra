@@ -37,14 +37,8 @@ import scipy.optimize as optimization
 from . import core
 
 # =============================================================================
-# CLASSES AND FUNCTIONS
+# CLASSES
 # =============================================================================
-
-
-def _HGmodel(x, a, b):
-    return a * np.exp(-3.33 * np.tan(x / 2) ** 0.63) + b * np.exp(
-        -1.87 * np.tan(x / 2) ** 1.22
-    )
 
 
 @attr.s(frozen=True)
@@ -105,6 +99,17 @@ class HGPlot(core.BasePlot):
 
         ax.legend(bbox_to_anchor=(1.05, 1))
         return ax
+
+
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
+
+
+def _HGmodel(x, a, b):
+    return a * np.exp(-3.33 * np.tan(x / 2) ** 0.63) + b * np.exp(
+        -1.87 * np.tan(x / 2) ** 1.22
+    )
 
 
 def HG_fit(df):
