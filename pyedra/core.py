@@ -68,7 +68,7 @@ class MetaData(Mapping):
         return self[a]
 
 
-@attr.s(frozen=True)
+@attr.s(frozen=True, repr=False)
 class PyedraFitDataFrame:
     """Initialize a dataframe model_df to which we can apply function a."""
 
@@ -83,9 +83,55 @@ class PyedraFitDataFrame:
     def _plot_default(self):
         return self.plot_cls(self)
 
+    def __getitem__(self, slice):
+        """x[y] <==> x.__getitem__(y)."""
+        sliced = self.model_df.__getitem__(slice)
+        return PyedraFitDataFrame(
+            model=self.model,
+            model_df=sliced,
+            plot_cls=self.plot_cls,
+            metadata=dict(self.metadata),
+        )
+
+    def __dir__(self):
+        """dir(pdf) <==> pdf.__dir__()."""
+        return super().__dir__() + dir(self.model_df)
+
     def __getattr__(self, a):
         """getattr(x, y) <==> x.__getattr__(y) <==> getattr(x, y)."""
         return getattr(self.model_df, a)
+
+    def __repr__(self):
+        """repr(x) <=> x.__repr__()."""
+        with pd.option_context("display.show_dimensions", False):
+            df_body = repr(self.model_df).splitlines()
+        df_dim = list(self.model_df.shape)
+        sdf_dim = f"{df_dim[0]} rows x {df_dim[1]} columns"
+
+        fotter = f"\nPyedraFitDataFrame - {sdf_dim}"
+        pyedra_data_repr = "\n".join(df_body + [fotter])
+        return pyedra_data_repr
+
+    def _repr_html_(self):
+        ad_id = id(self)
+
+        with pd.option_context("display.show_dimensions", False):
+            df_html = self.model_df._repr_html_()
+
+        rows = f"{self.model_df.shape[0]} rows"
+        columns = f"{self.model_df.shape[1]} columns"
+
+        footer = f"PyedraFitDataFrame - {rows} x {columns}"
+
+        parts = [
+            f'<div class="pyedra-data-container" id={ad_id}>',
+            df_html,
+            footer,
+            "</div>",
+        ]
+
+        html = "".join(parts)
+        return html
 
 
 @attr.s(frozen=True)

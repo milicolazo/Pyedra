@@ -32,3 +32,7 @@ def carbognani2019():
 @pytest.fixture
 def bad_data():
     return pd.DataFrame({"id": {0: 85}, "alpha": {0: 5}, "v": {0: 8}})
+
+@pytest.fixture
+def expected_filter():
+    return pd.DataFrame({"id": {0: 85}, "H": {0: 7.492423}, "error_H": {0: 0.070257}, "G": {0: 0.0434}, "error_G": {0: 0.035114}, "R": {0: 0.991422}})

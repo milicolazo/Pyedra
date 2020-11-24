@@ -15,6 +15,8 @@ import attr
 
 import numpy as np
 
+import pandas as pd
+
 import pyedra
 
 import pytest
@@ -23,6 +25,64 @@ import pytest
 # =============================================================================
 # TESTS
 # =============================================================================
+
+
+def test_getitem(carbognani2019, expected_filter):
+    pdf = pyedra.HG_fit(carbognani2019).model_df
+
+    filt = pdf[pdf["id"] == 85]
+
+    np.testing.assert_array_equal(filt.id, expected_filter.id)
+    np.testing.assert_array_almost_equal(filt.H, expected_filter.H)
+    np.testing.assert_array_almost_equal(
+        filt.error_H,
+        expected_filter.error_H,
+    )
+    np.testing.assert_array_almost_equal(filt.G, expected_filter.G)
+    np.testing.assert_array_almost_equal(filt.error_G, expected_filter.error_G)
+    np.testing.assert_array_almost_equal(filt.R, expected_filter.R)
+
+
+def test_rep(carbognani2019):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    with pd.option_context("display.show_dimensions", False):
+        df_body = repr(pdf.model_df).splitlines()
+    df_dim = list(pdf.model_df.shape)
+    sdf_dim = f"{df_dim[0]} rows x {df_dim[1]} columns"
+
+    fotter = f"\nPyedraFitDataFrame - {sdf_dim}"
+    expected = "\n".join(df_body + [fotter])
+
+    assert repr(pdf) == expected
+
+
+def test_repr_html(carbognani2019):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    ad_id = id(pdf)
+    with pd.option_context("display.show_dimensions", False):
+        df_html = pdf.model_df._repr_html_()
+    rows = f"{pdf.model_df.shape[0]} rows"
+    columns = f"{pdf.model_df.shape[1]} columns"
+    footer = f"PyedraFitDataFrame - {rows} x {columns}"
+    parts = [
+        f'<div class="pyedra-data-container" id={ad_id}>',
+        df_html,
+        footer,
+        "</div>",
+    ]
+
+    expected = "".join(parts)
+
+    assert pdf._repr_html_() == expected
+
+
+def test_dir(carbognani2019):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    for i in dir(pdf):
+        assert hasattr(pdf, i)
 
 
 def test_metadata():
