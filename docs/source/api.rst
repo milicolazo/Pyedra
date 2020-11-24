@@ -7,18 +7,18 @@ The input file must be a .csv file with three columns: id (mpc number), alpha (p
 
 The modules are:
 
-- **hg_model**: adjusts the H-G biparametric function to the data set. 
+- **HG_fit**: adjusts the H-G biparametric function to the data set. 
 
-- **shevchenko_model**: adjusts the Shevchenko triparametric function to the data set.
+- **Shev_fit**: adjusts the Shevchenko triparametric function to the data set.
 
-- **hg1g2_model**: adjusts the triparametric function H-G1-G2 to the data set.
+- **HG1G2_fit**: adjusts the triparametric function H-G1-G2 to the data set.
 
 In addition, the data input can be plotted with the chosen fit.
 
 -------------------------------------------------------------------------------------
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    
 Module ``pyedra.core``
 ----------------------

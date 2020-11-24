@@ -49,8 +49,8 @@ https://github.com/milicolazo/Pyedra
    
    installation
    license
-   tutorial.ipynb
    api
+   tutorial.ipynb
 
 
 Indices and tables
