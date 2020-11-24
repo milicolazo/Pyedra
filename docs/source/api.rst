@@ -1,4 +1,4 @@
-API Module
+pyedra API
 ==========
 
 **Pyedra** currently has three functions, each of which adjusts a different phase function model.
@@ -7,7 +7,7 @@ The input file must be a .csv file with three columns: id (mpc number), alpha (p
 
 The modules are:
 
-- **HG_fit**: adjusts the H-G biparametric function to the data set. 
+- **HG_fit**: adjusts the H-G biparametric function to the data set.
 
 - **Shev_fit**: adjusts the Shevchenko triparametric function to the data set.
 
@@ -19,7 +19,7 @@ In addition, the data input can be plotted with the chosen fit.
 
 .. toctree::
    :maxdepth: 4
-   
+
 Module ``pyedra.core``
 ----------------------
 
@@ -51,7 +51,7 @@ Module ``pyedra.shevchenko_model``
    :members:
    :show-inheritance:
    :member-order: bysource
-   
+
 Module ``pyedra.datasets``
 --------------------------
 
