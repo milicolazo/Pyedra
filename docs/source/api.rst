@@ -18,7 +18,7 @@ In addition, the data input can be plotted with the chosen fit.
 -------------------------------------------------------------------------------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    
 Module ``pyedra.core``
 ----------------------
