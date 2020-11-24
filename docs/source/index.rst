@@ -8,6 +8,10 @@ Pyedra's documentation
 
 .. only:: html
 
+    .. image:: _static/logo.png
+        :align: center
+        :scale: 100 %
+
 .. image:: https://travis-ci.com/milicolazo/Pyedra.svg?branch=master
     :target: https://travis-ci.com/milicolazo/Pyedra
     :alt: Build Status
