@@ -12,6 +12,7 @@ result_images/
 
 # Distribution / packaging
 .Python
+.coverage
 build/
 develop-eggs/
 dist/
