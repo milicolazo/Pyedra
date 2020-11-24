@@ -67,7 +67,7 @@ setup(
     install_requires=REQUIREMENTS,
     keywords=["pyedra", "asteroid", "phase function"],
     classifiers=[
-        "Development Status :: 1 - Beta",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Education",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
