@@ -11,6 +11,8 @@
 # IMPORTS
 # ======================================================================
 
+from unittest import mock
+
 from matplotlib.testing.decorators import check_figures_equal
 
 import numpy as np
@@ -92,6 +94,9 @@ def test_HG1G2_fit(carbognani2019):
 def test_plot_HG1G2_fit(carbognani2019, fig_test, fig_ref):
     pdf = pyedra.HG1G2_fit(carbognani2019)
 
+    test_ax = fig_test.subplots()
+    pdf.plot(df=carbognani2019, ax=test_ax)
+
     penttila2016 = pyedra.datasets.load_penttila2016()
 
     alphap = penttila2016["alpha"].to_numpy()
@@ -102,9 +107,6 @@ def test_plot_HG1G2_fit(carbognani2019, fig_test, fig_ref):
     y_interp1 = scipy.interpolate.interp1d(alphap, phi1)
     y_interp2 = scipy.interpolate.interp1d(alphap, phi2)
     y_interp3 = scipy.interpolate.interp1d(alphap, phi3)
-
-    test_ax = fig_test.subplots()
-    pdf.plot(df=carbognani2019, ax=test_ax)
 
     exp_ax = fig_ref.subplots()
     exp_ax.invert_yaxis()
@@ -145,6 +147,67 @@ def test_plot_HG1G2_fit(carbognani2019, fig_test, fig_ref):
             label=f"Data {int(m_row.id)}",
         )
     exp_ax.legend(bbox_to_anchor=(1.05, 1))
+
+
+@check_figures_equal()
+def test_plot_HG1G2_fit_ax_None(carbognani2019, fig_test, fig_ref):
+    pdf = pyedra.HG1G2_fit(carbognani2019)
+
+    penttila2016 = pyedra.datasets.load_penttila2016()
+
+    alphap = penttila2016["alpha"].to_numpy()
+    phi1 = penttila2016["phi1"].to_numpy()
+    phi2 = penttila2016["phi2"].to_numpy()
+    phi3 = penttila2016["phi3"].to_numpy()
+
+    y_interp1 = scipy.interpolate.interp1d(alphap, phi1)
+    y_interp2 = scipy.interpolate.interp1d(alphap, phi2)
+    y_interp3 = scipy.interpolate.interp1d(alphap, phi3)
+
+    exp_ax = fig_ref.subplots()
+    exp_ax.invert_yaxis()
+    exp_ax.set_title("Phase curves")
+    exp_ax.set_xlabel("Phase angle")
+    exp_ax.set_ylabel("V")
+
+    for idx, m_row in pdf.iterrows():
+
+        data = carbognani2019[carbognani2019["id"] == m_row.id]
+
+        def fit_y(d, e, f):
+            y = d - 2.5 * np.log10(e * fi1 + f * fi2 + (1 - e - f) * fi3)
+            return y
+
+        fi1 = np.array([])
+        fi2 = np.array([])
+        fi3 = np.array([])
+
+        for alpha_b in data.alpha:
+
+            p1 = y_interp1(alpha_b)
+            fi1 = np.append(fi1, p1)
+
+            p2 = y_interp2(alpha_b)
+            fi2 = np.append(fi2, p2)
+
+            p3 = y_interp3(alpha_b)
+            fi3 = np.append(fi3, p3)
+
+        v_fit = fit_y(m_row.H12, m_row.G1, m_row.G2)
+        exp_ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
+        exp_ax.plot(
+            data.alpha,
+            data.v,
+            marker="o",
+            linestyle="None",
+            label=f"Data {int(m_row.id)}",
+        )
+    exp_ax.legend(bbox_to_anchor=(1.05, 1))
+
+    test_ax = fig_test.subplots()
+    with mock.patch("matplotlib.pyplot.gcf", return_value=fig_test):
+        with mock.patch("matplotlib.pyplot.gca", return_value=test_ax):
+            pdf.plot(df=carbognani2019)
 
 
 @check_figures_equal()

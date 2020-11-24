@@ -11,6 +11,8 @@
 # IMPORTS
 # ======================================================================
 
+from unittest import mock
+
 from matplotlib.testing.decorators import check_figures_equal
 
 import numpy as np
@@ -20,6 +22,7 @@ import pandas as pd
 import pyedra.datasets
 
 import pytest
+
 
 # ------------------------------------------------------------------------------
 # H, G
@@ -99,6 +102,43 @@ def test_plot_HG_fit(carbognani2019, fig_test, fig_ref):
             label=f"Data {int(m_row.id)}",
         )
     exp_ax.legend(bbox_to_anchor=(1.05, 1))
+
+
+@check_figures_equal()
+def test_plot_HG_fit_ax_None(carbognani2019, fig_test, fig_ref):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    exp_ax = fig_ref.subplots()
+    exp_ax.invert_yaxis()
+    exp_ax.set_title("Phase curves")
+    exp_ax.set_xlabel("Phase angle")
+    exp_ax.set_ylabel("V")
+
+    def fit_y(alpha, H, G):
+        x = alpha * np.pi / 180
+        y = H - 2.5 * np.log10(
+            (1 - G) * np.exp(-3.33 * np.tan(x / 2) ** 0.63)
+            + G * np.exp(-1.87 * np.tan(x / 2) ** 1.22)
+        )
+        return y
+
+    for idx, m_row in pdf.iterrows():
+        data = carbognani2019[carbognani2019["id"] == m_row.id]
+        v_fit = fit_y(data.alpha, m_row.H, m_row.G)
+        exp_ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
+        exp_ax.plot(
+            data.alpha,
+            data.v,
+            marker="o",
+            linestyle="None",
+            label=f"Data {int(m_row.id)}",
+        )
+    exp_ax.legend(bbox_to_anchor=(1.05, 1))
+
+    test_ax = fig_test.subplots()
+    with mock.patch("matplotlib.pyplot.gcf", return_value=fig_test):
+        with mock.patch("matplotlib.pyplot.gca", return_value=test_ax):
+            pdf.plot(df=carbognani2019)
 
 
 @check_figures_equal()
