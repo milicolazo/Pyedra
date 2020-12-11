@@ -33,7 +33,7 @@ from setuptools import setup  # noqa
 PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 
 
-REQUIREMENTS = ["numpy", "pandas", "scipy", "attr", "matplotlib"]
+REQUIREMENTS = ["numpy", "pandas", "scipy", "attrs", "matplotlib"]
 
 with open(PATH / "pyedra" / "__init__.py") as fp:
     for line in fp.readlines():
