@@ -27,6 +27,7 @@
 import attr
 
 import matplotlib.pyplot as plt
+from matplotlib import cm
 
 import numpy as np
 
@@ -47,7 +48,9 @@ class HGPlot(core.BasePlot):
 
     default_plot_kind = "curvefit"
 
-    def curvefit(self, df, ax=None, **kwargs):
+    def curvefit(
+        self, df, ax=None, cmap=None, fit_kwargs=None, data_kwargs=None
+    ):
         """Plot the phase function using the HG model.
 
         Parameters
@@ -60,8 +63,20 @@ class HGPlot(core.BasePlot):
         ax : ``matplotlib.pyplot.Axis``, (optional)
             Matplotlib axis
 
-        **kwargs :
-            Extra variables are not used
+        cmap : ``None``, ``str`` or calable (optional)
+            Name of the color map to be used
+            (https://matplotlib.org/users/colormaps.html).
+            If is None, the default colors of the matplotlib.pyplot.plot
+            function is used, and if, and is a callable is used as
+            colormap generator.
+
+        fit_kwargs: ``dict`` or ``None`` (optional)
+            The parameters to send to the fit curve plot.
+            Only ``label`` and ``color`` can't be provided.
+
+        data_kwargs: ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot.
+            Only ``label`` and ``color`` can't be provided.
 
 
         Return
@@ -81,25 +96,62 @@ class HGPlot(core.BasePlot):
 
         if ax is None:
             ax = plt.gca()
+            fig = ax.get_figure()
+            fig.set_size_inches(self.DEFAULT_FIGURE_SIZE)
 
         ax.invert_yaxis()
-        ax.set_title("Phase curves")
+        ax.set_title("HG - Phase curves")
         ax.set_xlabel("Phase angle")
         ax.set_ylabel("V")
 
+        fit_kwargs = {} if fit_kwargs is None else fit_kwargs
+        fit_kwargs.setdefault("ls", "--")
+        fit_kwargs.setdefault("alpha", 0.5)
+
+        data_kwargs = {} if data_kwargs is None else data_kwargs
+        data_kwargs.setdefault("marker", "o")
+        data_kwargs.setdefault("ls", "None")
+
+        model_size = len(self.pdf.model_df)
+
+        if cmap is None:
+            colors = [None] * model_size
+        elif callable(cmap):
+            colors = cmap(np.linspace(0, 1, model_size))
+        else:
+            cmap = cm.get_cmap(cmap)
+            colors = cmap(np.linspace(0, 1, model_size))
+
         for idx, m_row in self.pdf.model_df.iterrows():
+            row_id = int(m_row.id)
             data = df[df["id"] == m_row.id]
             v_fit = fit_y(data.alpha, m_row.H, m_row.G)
-            ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
+
+            # line part
+            line = ax.plot(
+                data.alpha,
+                v_fit,
+                label=f"Fit #{row_id}",
+                color=colors[idx],
+                **fit_kwargs,
+            )
+
+            # data part
             ax.plot(
                 data.alpha,
                 data.v,
-                marker="o",
-                linestyle="None",
-                label=f"Data {int(m_row.id)}",
+                color=line[0].get_color(),
+                label=f"Data #{row_id}",
+                **data_kwargs,
             )
 
-        ax.legend(bbox_to_anchor=(1.05, 1))
+        # reorder legend for two columns
+        handles, labels = ax.get_legend_handles_labels()
+        labels, handles = zip(
+            *sorted(zip(labels, handles), key=lambda t: t[0])
+        )
+        ax.legend(handles, labels, ncol=2, loc="best")
+
         return ax
 
 

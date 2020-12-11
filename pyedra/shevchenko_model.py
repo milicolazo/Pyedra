@@ -95,7 +95,7 @@ class ShevPlot(core.BasePlot):
             fig.set_size_inches(self.DEFAULT_FIGURE_SIZE)
 
         ax.invert_yaxis()
-        ax.set_title("Phase curves")
+        ax.set_title("Shevchenko Phase curves")
         ax.set_xlabel("Phase angle")
         ax.set_ylabel("V")
 
