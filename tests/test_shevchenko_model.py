@@ -100,7 +100,7 @@ def test_plot_Shev_fit(carbognani2019, fig_test, fig_ref):
 
     exp_ax = fig_ref.subplots()
     exp_ax.invert_yaxis()
-    exp_ax.set_title("Shevchenko Phase curves")
+    exp_ax.set_title("Shevchenko - Phase curves")
     exp_ax.set_xlabel("Phase angle")
     exp_ax.set_ylabel("V")
 
@@ -137,7 +137,7 @@ def test_plot_Shev_fit_cmap_str(carbognani2019, fig_test, fig_ref):
 
     exp_ax = fig_ref.subplots()
     exp_ax.invert_yaxis()
-    exp_ax.set_title("Shevchenko Phase curves")
+    exp_ax.set_title("Shevchenko - Phase curves")
     exp_ax.set_xlabel("Phase angle")
     exp_ax.set_ylabel("V")
 
@@ -184,7 +184,7 @@ def test_plot_Shev_fit_cmap_callable(carbognani2019, fig_test, fig_ref):
 
     exp_ax = fig_ref.subplots()
     exp_ax.invert_yaxis()
-    exp_ax.set_title("Shevchenko Phase curves")
+    exp_ax.set_title("Shevchenko - Phase curves")
     exp_ax.set_xlabel("Phase angle")
     exp_ax.set_ylabel("V")
 
@@ -234,7 +234,7 @@ def test_plot_Shev_fit_ax_None(carbognani2019, fig_test, fig_ref):
     fig_ref.set_size_inches(pdf.plot.DEFAULT_FIGURE_SIZE)
     exp_ax = fig_ref.subplots()
     exp_ax.invert_yaxis()
-    exp_ax.set_title("Shevchenko Phase curves")
+    exp_ax.set_title("Shevchenko - Phase curves")
     exp_ax.set_xlabel("Phase angle")
     exp_ax.set_ylabel("V")
 
