@@ -123,8 +123,8 @@ def Shev_fit(df):
 
     Returns
     -------
-    model_df: ``pandas.DataFrame``
-        The output dataframe contains six columns: id (mpc number of
+    ``PyedraFitDataFrame``
+        The output contains six columns: id (mpc number of
         the asteroid), V_lin (magnitude calculated by linear
         extrapolation to zero), V_lin error (fit V_lin parameter
         error), b (fit parameter characterizing the opposition efect

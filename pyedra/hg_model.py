@@ -129,8 +129,8 @@ def HG_fit(df):
 
     Returns
     -------
-    model_df: ``pandas.DataFrame``
-        The output dataframe contains six columns: id (mpc number of
+    ``PyedraFitDataFrame``
+        The output contains six columns: id (mpc number of
         the asteroid), H (absolute magnitude returned by the fit),
         H error (fit H parameter error), G (slope parameter returned by
         the fit), G error (fit G parameter error) and R (fit
