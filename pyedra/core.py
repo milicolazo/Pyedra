@@ -138,6 +138,9 @@ class PyedraFitDataFrame:
 class BasePlot(abc.ABC):
     """Plots for HG fit."""
 
+    # this is the default size of any plot.
+    DEFAULT_FIGURE_SIZE = 10, 6
+
     pdf = attr.ib()
 
     @abc.abstractproperty
