@@ -43,7 +43,7 @@ def test_getitem(carbognani2019, expected_filter):
     np.testing.assert_array_almost_equal(filt.R, expected_filter.R)
 
 
-def test_rep(carbognani2019):
+def test_repr(carbognani2019):
     pdf = pyedra.HG_fit(carbognani2019)
 
     with pd.option_context("display.show_dimensions", False):

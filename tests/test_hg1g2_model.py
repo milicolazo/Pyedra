@@ -13,6 +13,7 @@
 
 from unittest import mock
 
+from matplotlib import cm
 from matplotlib.testing.decorators import check_figures_equal
 
 import numpy as np
@@ -110,17 +111,17 @@ def test_plot_HG1G2_fit(carbognani2019, fig_test, fig_ref):
 
     exp_ax = fig_ref.subplots()
     exp_ax.invert_yaxis()
-    exp_ax.set_title("Phase curves")
+    exp_ax.set_title("HG1G2 - Phase curves")
     exp_ax.set_xlabel("Phase angle")
     exp_ax.set_ylabel("V")
+
+    def fit_y(d, e, f):
+        y = d - 2.5 * np.log10(e * fi1 + f * fi2 + (1 - e - f) * fi3)
+        return y
 
     for idx, m_row in pdf.iterrows():
 
         data = carbognani2019[carbognani2019["id"] == m_row.id]
-
-        def fit_y(d, e, f):
-            y = d - 2.5 * np.log10(e * fi1 + f * fi2 + (1 - e - f) * fi3)
-            return y
 
         fi1 = np.array([])
         fi2 = np.array([])
@@ -138,20 +139,29 @@ def test_plot_HG1G2_fit(carbognani2019, fig_test, fig_ref):
             fi3 = np.append(fi3, p3)
 
         v_fit = fit_y(m_row.H12, m_row.G1, m_row.G2)
-        exp_ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
+        line = exp_ax.plot(
+            data.alpha, v_fit, "--", label=f"Fit #{int(m_row.id)}", alpha=0.5
+        )
         exp_ax.plot(
             data.alpha,
             data.v,
             marker="o",
+            color=line[0].get_color(),
             linestyle="None",
-            label=f"Data {int(m_row.id)}",
+            label=f"Data #{int(m_row.id)}",
         )
-    exp_ax.legend(bbox_to_anchor=(1.05, 1))
+
+    handles, labels = exp_ax.get_legend_handles_labels()
+    labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
+    exp_ax.legend(handles, labels, ncol=2, loc="best")
 
 
 @check_figures_equal()
-def test_plot_HG1G2_fit_ax_None(carbognani2019, fig_test, fig_ref):
+def test_plot_HG1G2_fit_cmap_str(carbognani2019, fig_test, fig_ref):
     pdf = pyedra.HG1G2_fit(carbognani2019)
+
+    test_ax = fig_test.subplots()
+    pdf.plot(df=carbognani2019, ax=test_ax, cmap="viridis")
 
     penttila2016 = pyedra.datasets.load_penttila2016()
 
@@ -166,17 +176,22 @@ def test_plot_HG1G2_fit_ax_None(carbognani2019, fig_test, fig_ref):
 
     exp_ax = fig_ref.subplots()
     exp_ax.invert_yaxis()
-    exp_ax.set_title("Phase curves")
+    exp_ax.set_title("HG1G2 - Phase curves")
     exp_ax.set_xlabel("Phase angle")
     exp_ax.set_ylabel("V")
+
+    def fit_y(d, e, f):
+        y = d - 2.5 * np.log10(e * fi1 + f * fi2 + (1 - e - f) * fi3)
+        return y
+
+    model_size = len(pdf.model_df)
+
+    cmap = cm.get_cmap("viridis")
+    colors = colors = cmap(np.linspace(0, 1, model_size))
 
     for idx, m_row in pdf.iterrows():
 
         data = carbognani2019[carbognani2019["id"] == m_row.id]
-
-        def fit_y(d, e, f):
-            y = d - 2.5 * np.log10(e * fi1 + f * fi2 + (1 - e - f) * fi3)
-            return y
 
         fi1 = np.array([])
         fi2 = np.array([])
@@ -194,20 +209,170 @@ def test_plot_HG1G2_fit_ax_None(carbognani2019, fig_test, fig_ref):
             fi3 = np.append(fi3, p3)
 
         v_fit = fit_y(m_row.H12, m_row.G1, m_row.G2)
-        exp_ax.plot(data.alpha, v_fit, "--", label=f"Fit {int(m_row.id)}")
+        line = exp_ax.plot(
+            data.alpha,
+            v_fit,
+            "--",
+            label=f"Fit #{int(m_row.id)}",
+            alpha=0.5,
+            color=colors[idx],
+        )
         exp_ax.plot(
             data.alpha,
             data.v,
             marker="o",
+            color=line[0].get_color(),
             linestyle="None",
-            label=f"Data {int(m_row.id)}",
+            label=f"Data #{int(m_row.id)}",
         )
-    exp_ax.legend(bbox_to_anchor=(1.05, 1))
+
+    handles, labels = exp_ax.get_legend_handles_labels()
+    labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
+    exp_ax.legend(handles, labels, ncol=2, loc="best")
+
+
+@check_figures_equal()
+def test_plot_HG1G2_fit_cmap_callable(carbognani2019, fig_test, fig_ref):
+    pdf = pyedra.HG1G2_fit(carbognani2019)
+
+    test_ax = fig_test.subplots()
+    pdf.plot(df=carbognani2019, ax=test_ax, cmap=cm.get_cmap("viridis"))
+
+    penttila2016 = pyedra.datasets.load_penttila2016()
+
+    alphap = penttila2016["alpha"].to_numpy()
+    phi1 = penttila2016["phi1"].to_numpy()
+    phi2 = penttila2016["phi2"].to_numpy()
+    phi3 = penttila2016["phi3"].to_numpy()
+
+    y_interp1 = scipy.interpolate.interp1d(alphap, phi1)
+    y_interp2 = scipy.interpolate.interp1d(alphap, phi2)
+    y_interp3 = scipy.interpolate.interp1d(alphap, phi3)
+
+    exp_ax = fig_ref.subplots()
+    exp_ax.invert_yaxis()
+    exp_ax.set_title("HG1G2 - Phase curves")
+    exp_ax.set_xlabel("Phase angle")
+    exp_ax.set_ylabel("V")
+
+    def fit_y(d, e, f):
+        y = d - 2.5 * np.log10(e * fi1 + f * fi2 + (1 - e - f) * fi3)
+        return y
+
+    model_size = len(pdf.model_df)
+
+    cmap = cm.get_cmap("viridis")
+    colors = colors = cmap(np.linspace(0, 1, model_size))
+
+    for idx, m_row in pdf.iterrows():
+
+        data = carbognani2019[carbognani2019["id"] == m_row.id]
+
+        fi1 = np.array([])
+        fi2 = np.array([])
+        fi3 = np.array([])
+
+        for alpha_b in data.alpha:
+
+            p1 = y_interp1(alpha_b)
+            fi1 = np.append(fi1, p1)
+
+            p2 = y_interp2(alpha_b)
+            fi2 = np.append(fi2, p2)
+
+            p3 = y_interp3(alpha_b)
+            fi3 = np.append(fi3, p3)
+
+        v_fit = fit_y(m_row.H12, m_row.G1, m_row.G2)
+        line = exp_ax.plot(
+            data.alpha,
+            v_fit,
+            "--",
+            label=f"Fit #{int(m_row.id)}",
+            alpha=0.5,
+            color=colors[idx],
+        )
+        exp_ax.plot(
+            data.alpha,
+            data.v,
+            marker="o",
+            color=line[0].get_color(),
+            linestyle="None",
+            label=f"Data #{int(m_row.id)}",
+        )
+
+    handles, labels = exp_ax.get_legend_handles_labels()
+    labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
+    exp_ax.legend(handles, labels, ncol=2, loc="best")
+
+
+@check_figures_equal()
+def test_plot_HG1G2_fit_ax_None(carbognani2019, fig_test, fig_ref):
+    pdf = pyedra.HG1G2_fit(carbognani2019)
 
     test_ax = fig_test.subplots()
     with mock.patch("matplotlib.pyplot.gcf", return_value=fig_test):
         with mock.patch("matplotlib.pyplot.gca", return_value=test_ax):
             pdf.plot(df=carbognani2019)
+
+    penttila2016 = pyedra.datasets.load_penttila2016()
+
+    alphap = penttila2016["alpha"].to_numpy()
+    phi1 = penttila2016["phi1"].to_numpy()
+    phi2 = penttila2016["phi2"].to_numpy()
+    phi3 = penttila2016["phi3"].to_numpy()
+
+    y_interp1 = scipy.interpolate.interp1d(alphap, phi1)
+    y_interp2 = scipy.interpolate.interp1d(alphap, phi2)
+    y_interp3 = scipy.interpolate.interp1d(alphap, phi3)
+
+    fig_ref.set_size_inches(pdf.plot.DEFAULT_FIGURE_SIZE)
+    exp_ax = fig_ref.subplots()
+    exp_ax.invert_yaxis()
+    exp_ax.set_title("HG1G2 - Phase curves")
+    exp_ax.set_xlabel("Phase angle")
+    exp_ax.set_ylabel("V")
+
+    def fit_y(d, e, f):
+        y = d - 2.5 * np.log10(e * fi1 + f * fi2 + (1 - e - f) * fi3)
+        return y
+
+    for idx, m_row in pdf.iterrows():
+
+        data = carbognani2019[carbognani2019["id"] == m_row.id]
+
+        fi1 = np.array([])
+        fi2 = np.array([])
+        fi3 = np.array([])
+
+        for alpha_b in data.alpha:
+
+            p1 = y_interp1(alpha_b)
+            fi1 = np.append(fi1, p1)
+
+            p2 = y_interp2(alpha_b)
+            fi2 = np.append(fi2, p2)
+
+            p3 = y_interp3(alpha_b)
+            fi3 = np.append(fi3, p3)
+
+        v_fit = fit_y(m_row.H12, m_row.G1, m_row.G2)
+        v_fit = fit_y(m_row.H12, m_row.G1, m_row.G2)
+        line = exp_ax.plot(
+            data.alpha, v_fit, "--", label=f"Fit #{int(m_row.id)}", alpha=0.5
+        )
+        exp_ax.plot(
+            data.alpha,
+            data.v,
+            marker="o",
+            color=line[0].get_color(),
+            linestyle="None",
+            label=f"Data #{int(m_row.id)}",
+        )
+
+    handles, labels = exp_ax.get_legend_handles_labels()
+    labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
+    exp_ax.legend(handles, labels, ncol=2, loc="best")
 
 
 @check_figures_equal()
