@@ -166,7 +166,7 @@ def _HGmodel(x, a, b):
     )
 
 
-def HG_fit(df):
+def HG_fit(df, idc="id", alphac="alpha", magc="v"):
     """Fit (H-G) system to data from table.
 
     HG_fit calculates the H and G parameters of the phase function
@@ -175,7 +175,9 @@ def HG_fit(df):
     Parameters
     ----------
     df: ``pandas.DataFrame``
-        The dataframe must contain 3 columns as indicated here:
+        The dataframe must with the values
+
+        contain 3 columns as indicated here:
         id (mpc number of the asteroid), alpha (phase angle) and
         v (reduced magnitude in Johnson's V filter).
 
@@ -201,7 +203,7 @@ def HG_fit(df):
             f"Some asteroids has less than 2 observations: {lt_str}"
         )
 
-    noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
+    noob = df.drop_duplicates(subset=idc, keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
     H_column = np.empty(size)
@@ -209,13 +211,14 @@ def HG_fit(df):
     G_column = np.empty(size)
     error_G_column = np.empty(size)
     R_column = np.empty(size)
+    observations = np.empty(size, dtype=int)
 
-    for idx, id in enumerate(noob.id):
+    for idx, id in enumerate(noob[idc]):
 
-        data = df[df["id"] == id]
+        data = df[df[idc] == id]
 
-        alpha_list = data["alpha"].to_numpy()
-        V_list = data["v"].to_numpy()
+        alpha_list = data[alphac].to_numpy()
+        V_list = data[magc].to_numpy()
 
         v_fit = 10 ** (-0.4 * V_list)
         alpha_fit = alpha_list * np.pi / 180
@@ -243,6 +246,7 @@ def HG_fit(df):
         G_column[idx] = G
         error_G_column[idx] = error_G
         R_column[idx] = r_squared
+        observations[idx] = len(data)
 
     model_df = pd.DataFrame(
         {
@@ -252,6 +256,7 @@ def HG_fit(df):
             "G": G_column,
             "error_G": error_G_column,
             "R": R_column,
+            "observations": observations,
         }
     )
 

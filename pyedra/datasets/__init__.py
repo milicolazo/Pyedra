@@ -72,3 +72,9 @@ def load_penttila2016():
     path = PATH / "penttila2016.csv"
 
     return pd.read_csv(path)
+
+
+def load_gaia():
+    """[summary]"""
+    path = PATH / "gaia.csv.bz2"
+    return pd.read_csv(path, na_filter=False, compression="bz2")
