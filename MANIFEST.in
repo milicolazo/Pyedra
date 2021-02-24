@@ -1,6 +1,7 @@
 include LICENSE
 include README.md
 recursive-include pyedra *.csv
+recursive-include pyedra *.csv.bz2
 
 exclude tox.ini
 exclude pyproject.toml

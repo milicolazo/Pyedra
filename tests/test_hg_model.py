@@ -60,12 +60,22 @@ def test_HG_fit(carbognani2019):
                 5: -0.0812,
                 6: 0.1411,
             },
+            "observations": {
+                0: 7,
+                1: 7,
+                2: 8,
+                3: 7,
+                4: 6,
+                5: 5,
+                6: 7,
+            },
         }
     )
 
     for idx, e_row in expected.iterrows():
         r_row = result[result.id == e_row.id].iloc[0]
         np.testing.assert_array_equal(r_row.id, e_row.id)
+        np.testing.assert_array_equal(r_row.observations, e_row.observations)
         np.testing.assert_allclose(r_row.H, e_row.H, atol=r_row.error_H)
         np.testing.assert_allclose(r_row.G, e_row.G, atol=r_row.error_G)
 

@@ -176,19 +176,24 @@ def HG_fit(df, idc="id", alphac="alpha", magc="v"):
     ----------
     df: ``pandas.DataFrame``
         The dataframe must with the values
+    idc : ``str``, optional (default=id)
+        Column with the mpc number of the asteroids.
+    alphac : ``str``, optional (default=alpha)
+        Column with the phase angle of the asteroids.
+    magc : ``str``, optional (default=v)
+        Column with the magnitude. The default 'v' value is reference
+        to the reduced magnitude in Johnson's V filter.
 
-        contain 3 columns as indicated here:
-        id (mpc number of the asteroid), alpha (phase angle) and
-        v (reduced magnitude in Johnson's V filter).
 
     Returns
     -------
     ``PyedraFitDataFrame``
-        The output contains six columns: id (mpc number of
+        The output contains 7 columns: id (mpc number of
         the asteroid), H (absolute magnitude returned by the fit),
         H error (fit H parameter error), G (slope parameter returned by
-        the fit), G error (fit G parameter error) and R (fit
-        determination coefficient).
+        the fit), G error (fit G parameter error), R (fit
+        determination coefficient) and observations
+        (number of observation of the given asteroid).
 
     References
     ----------
