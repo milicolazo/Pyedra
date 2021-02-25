@@ -49,31 +49,40 @@ class ShevPlot(core.BasePlot):
     default_plot_kind = "curvefit"
 
     def curvefit(
-        self, df, ax=None, cmap=None, fit_kwargs=None, data_kwargs=None
+        self,
+        df,
+        idc="id",
+        alphac="alpha",
+        magc="v",
+        ax=None,
+        cmap=None,
+        fit_kwargs=None,
+        data_kwargs=None,
     ):
         """Plot the phase function using the Shev model.
 
         Parameters
         ----------
-        df : ``pandas.DataFrame``
-            The dataframe must contain 3 columns as indicated here:
-            id (mpc number of the asteroid), alpha (phase angle) and
-            v (reduced magnitude in Johnson's V filter).
-
+        df: ``pandas.DataFrame``
+            The dataframe must with the values
+        idc : ``str``, optional (default=id)
+            Column with the mpc number of the asteroids.
+        alphac : ``str``, optional (default=alpha)
+            Column with the phase angle of the asteroids.
+        magc : ``str``, optional (default=v)
+            Column with the magnitude. The default 'v' value is reference
+            to the reduced magnitude in Johnson's V filter.
         ax : ``matplotlib.pyplot.Axis``, (optional)
             Matplotlib axis
-
         cmap : ``None``, ``str`` or calable (optional)
             Name of the color map to be used
             (https://matplotlib.org/users/colormaps.html).
             If is None, the default colors of the matplotlib.pyplot.plot
             function is used, and if, and is a callable is used as
             colormap generator.
-
         fit_kwargs: ``dict`` or ``None`` (optional)
             The parameters to send to the fit curve plot.
             Only ``label`` and ``color`` can't be provided.
-
         data_kwargs: ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
             Only ``label`` and ``color`` can't be provided.
@@ -97,7 +106,7 @@ class ShevPlot(core.BasePlot):
         ax.invert_yaxis()
         ax.set_title("Shevchenko - Phase curves")
         ax.set_xlabel("Phase angle")
-        ax.set_ylabel("V")
+        ax.set_ylabel(magc.upper())
 
         fit_kwargs = {} if fit_kwargs is None else fit_kwargs
         fit_kwargs.setdefault("ls", "--")
@@ -119,12 +128,12 @@ class ShevPlot(core.BasePlot):
 
         for idx, m_row in self.pdf.model_df.iterrows():
             row_id = int(m_row.id)
-            data = df[df["id"] == m_row.id]
-            v_fit = fit_y(data.alpha, m_row.V_lin, m_row.b, m_row.c)
+            data = df[df[idc] == m_row.id]
+            v_fit = fit_y(data[alphac], m_row.V_lin, m_row.b, m_row.c)
 
             # line part
             line = ax.plot(
-                data.alpha,
+                data[alphac],
                 v_fit,
                 label=f"Fit #{row_id}",
                 color=colors[idx],
@@ -133,8 +142,8 @@ class ShevPlot(core.BasePlot):
 
             # data part
             ax.plot(
-                data.alpha,
-                data.v,
+                data[alphac],
+                data[magc],
                 color=line[0].get_color(),
                 label=f"Data #{row_id}",
                 **data_kwargs,
@@ -159,7 +168,7 @@ def _Shev_model(x, V_lin, b, c):
     return V_lin + c * x - b / (1 + x)
 
 
-def Shev_fit(df):
+def Shev_fit(df, idc="id", alphac="alpha", magc="v"):
     """Fit Shevchenko equation to data from table.
 
     Shev_fit calculates parameters of the three-parameter empirical
@@ -168,10 +177,14 @@ def Shev_fit(df):
     Parameters
     ----------
     df: ``pandas.DataFrame``
-        The dataframe must contain 3 columns as indicated here:
-        id (mpc number of the asteroid), alpha (phase angle),
-        v (reduced magnitude in Johnson's V filter) and observations
-        (number of observation of the given asteroid).
+        The dataframe must with the values
+    idc : ``str``, optional (default=id)
+        Column with the mpc number of the asteroids.
+    alphac : ``str``, optional (default=alpha)
+        Column with the phase angle of the asteroids.
+    magc : ``str``, optional (default=v)
+        Column with the magnitude. The default 'v' value is reference
+        to the reduced magnitude in Johnson's V filter.
 
     Returns
     -------
@@ -196,14 +209,14 @@ def Shev_fit(df):
     .. [4] Belskaya, I. N., Shevchenko, V. G., 2000. Opposition effect
        of asteroids. Icarus 147, 94-105.
     """
-    lt = core.obs_counter(df, 3)
+    lt = core.obs_counter(df, 3, idc, alphac)
     if len(lt):
         lt_str = " - ".join(str(idx) for idx in lt)
         raise ValueError(
             f"Some asteroids has less than 3 observations: {lt_str}"
         )
 
-    noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
+    noob = df.drop_duplicates(subset=idc, keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
     V_lin_column = np.empty(size)
@@ -215,12 +228,12 @@ def Shev_fit(df):
     R_column = np.empty(size)
     observations = np.empty(size, dtype=int)
 
-    for idx, id in enumerate(noob.id):
+    for idx, id in enumerate(noob[idc]):
 
-        data = df[df["id"] == id]
+        data = df[df[idc] == id]
 
-        alpha_list = data["alpha"].to_numpy()
-        V_list = data["v"].to_numpy()
+        alpha_list = data[alphac].to_numpy()
+        V_list = data[magc].to_numpy()
 
         op, cov = optimization.curve_fit(_Shev_model, alpha_list, V_list)
 

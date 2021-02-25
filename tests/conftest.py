@@ -22,7 +22,7 @@ import pytest
 # =============================================================================
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def carbognani2019():
     return pyedra.datasets.load_carbognani2019()
 

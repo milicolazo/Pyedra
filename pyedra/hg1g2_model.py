@@ -44,35 +44,43 @@ class HG1G2Plot(core.BasePlot):
     default_plot_kind = "curvefit"
 
     def curvefit(
-        self, df, ax=None, cmap=None, fit_kwargs=None, data_kwargs=None
+        self,
+        df,
+        idc="id",
+        alphac="alpha",
+        magc="v",
+        ax=None,
+        cmap=None,
+        fit_kwargs=None,
+        data_kwargs=None,
     ):
         """Plot the phase function using the HG1G2 model.
 
         Parameters
         ----------
-        df : ``pandas.DataFrame``
-            The dataframe must contain 3 columns as indicated here:
-            id (mpc number of the asteroid), alpha (phase angle) and
-            v (reduced magnitude in Johnson's V filter).
-
+        df: ``pandas.DataFrame``
+            The dataframe must with the values
+        idc : ``str``, optional (default=id)
+            Column with the mpc number of the asteroids.
+        alphac : ``str``, optional (default=alpha)
+            Column with the phase angle of the asteroids.
+        magc : ``str``, optional (default=v)
+            Column with the magnitude. The default 'v' value is reference
+            to the reduced magnitude in Johnson's V filter.
         ax : ``matplotlib.pyplot.Axis``, (optional)
             Matplotlib axis
-
         cmap : ``None``, ``str`` or calable (optional)
             Name of the color map to be used
             (https://matplotlib.org/users/colormaps.html).
             If is None, the default colors of the matplotlib.pyplot.plot
             function is used, and if, and is a callable is used as
             colormap generator.
-
         fit_kwargs: ``dict`` or ``None`` (optional)
             The parameters to send to the fit curve plot.
             Only ``label`` and ``color`` can't be provided.
-
         data_kwargs: ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
             Only ``label`` and ``color`` can't be provided.
-
 
         Return
         ------
@@ -93,7 +101,7 @@ class HG1G2Plot(core.BasePlot):
         ax.invert_yaxis()
         ax.set_title("HG1G2 - Phase curves")
         ax.set_xlabel("Phase angle")
-        ax.set_ylabel("V")
+        ax.set_ylabel(magc.upper())
 
         fit_kwargs = {} if fit_kwargs is None else fit_kwargs
         fit_kwargs.setdefault("ls", "--")
@@ -116,13 +124,13 @@ class HG1G2Plot(core.BasePlot):
         for idx, m_row in self.pdf.iterrows():
             row_id = int(m_row.id)
 
-            data = df[df["id"] == m_row.id]
+            data = df[df[idc] == m_row.id]
 
             fi1 = np.array([])
             fi2 = np.array([])
             fi3 = np.array([])
 
-            for alpha_b in data.alpha:
+            for alpha_b in data[alphac]:
 
                 p1 = self.pdf.metadata.y_interp1(alpha_b)
                 fi1 = np.append(fi1, p1)
@@ -136,7 +144,7 @@ class HG1G2Plot(core.BasePlot):
             v_fit = fit_y(m_row.H12, m_row.G1, m_row.G2)
 
             line = ax.plot(
-                data.alpha,
+                data[alphac],
                 v_fit,
                 label=f"Fit #{row_id}",
                 color=colors[idx],
@@ -145,8 +153,8 @@ class HG1G2Plot(core.BasePlot):
 
             # data part
             ax.plot(
-                data.alpha,
-                data.v,
+                data[alphac],
+                data[magc],
                 color=line[0].get_color(),
                 label=f"Data #{row_id}",
                 **data_kwargs,
@@ -172,7 +180,7 @@ def _HG1G2_model(X, a, b, c):
     return a * x + b * y + c * z
 
 
-def HG1G2_fit(df):
+def HG1G2_fit(df, idc="id", alphac="alpha", magc="v"):
     """Fit (H-G1-G2) system to data from table.
 
     HG1G2_fit calculates the H,G1 and G2 parameters of the phase
@@ -181,10 +189,14 @@ def HG1G2_fit(df):
     Parameters
     ----------
     df: ``pandas.DataFrame``
-        The dataframe must contain 3 columns as indicated here:
-        id (mpc number of the asteroid), alpha (phase angle),
-        v (reduced magnitude in Johnson's V filter) and observations
-        (number of observation of the given asteroid).
+        The dataframe must with the values
+    idc : ``str``, optional (default=id)
+        Column with the mpc number of the asteroids.
+    alphac : ``str``, optional (default=alpha)
+        Column with the phase angle of the asteroids.
+    magc : ``str``, optional (default=v)
+        Column with the magnitude. The default 'v' value is reference
+        to the reduced magnitude in Johnson's V filter.
 
     Returns
     -------
@@ -202,14 +214,14 @@ def HG1G2_fit(df):
        Levasseur-Regourd A.-C.,Penttilä A., Tedesco E. F., 2010,
        Icarus, 209, 542.
     """
-    lt = core.obs_counter(df, 3)
+    lt = core.obs_counter(df, 3, idc, alphac)
     if len(lt):
         lt_str = " - ".join(str(idx) for idx in lt)
         raise ValueError(
             f"Some asteroids has less than 3 observations: {lt_str}"
         )
 
-    noob = df.drop_duplicates(subset="id", keep="first", inplace=False)
+    noob = df.drop_duplicates(subset=idc, keep="first", inplace=False)
     size = len(noob)
     id_column = np.empty(size, dtype=int)
     H_1_2_column = np.empty(size)
@@ -232,15 +244,15 @@ def HG1G2_fit(df):
     y_interp2 = scipy.interpolate.interp1d(alpha, phi2)
     y_interp3 = scipy.interpolate.interp1d(alpha, phi3)
 
-    for idx, id in enumerate(noob.id):
+    for idx, id in enumerate(noob[idc]):
 
-        data = df[df["id"] == id]
+        data = df[df[idc] == id]
 
         fi1 = np.array([])
         fi2 = np.array([])
         fi3 = np.array([])
 
-        for alpha_b in data.alpha:
+        for alpha_b in data[alphac]:
 
             p1 = y_interp1(alpha_b)
             fi1 = np.append(fi1, p1)
@@ -251,7 +263,7 @@ def HG1G2_fit(df):
             p3 = y_interp3(alpha_b)
             fi3 = np.append(fi3, p3)
 
-        v = data["v"].to_numpy()
+        v = data[magc].to_numpy()
         v_fit = 10 ** (-0.4 * v)
 
         op, cov = optimization.curve_fit(_HG1G2_model, (fi1, fi2, fi3), v_fit)

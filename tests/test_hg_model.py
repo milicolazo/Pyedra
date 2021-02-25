@@ -80,6 +80,21 @@ def test_HG_fit(carbognani2019):
         np.testing.assert_allclose(r_row.G, e_row.G, atol=r_row.error_G)
 
 
+@pytest.mark.parametrize("idc", ["id", "num"])
+@pytest.mark.parametrize("alphac", ["alpha", "alph"])
+@pytest.mark.parametrize("magc", ["v", "i"])
+def test_HG_other_column_names(carbognani2019, idc, alphac, magc):
+
+    expected = pyedra.HG_fit(carbognani2019).model_df
+
+    carbognani2019.columns = [idc, alphac, magc]
+    result = pyedra.HG_fit(
+        carbognani2019, idc=idc, alphac=alphac, magc=magc
+    ).model_df
+
+    pd.testing.assert_frame_equal(result, expected)
+
+
 @check_figures_equal()
 def test_plot_HG_fit(carbognani2019, fig_test, fig_ref):
     pdf = pyedra.HG_fit(carbognani2019)
@@ -120,6 +135,24 @@ def test_plot_HG_fit(carbognani2019, fig_test, fig_ref):
     handles, labels = exp_ax.get_legend_handles_labels()
     labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
     exp_ax.legend(handles, labels, ncol=2, loc="best")
+
+
+@pytest.mark.parametrize("idc", ["id", "num"])
+@pytest.mark.parametrize("alphac", ["alpha", "alph"])
+@pytest.mark.parametrize("magc", ["v", "i"])
+@check_figures_equal()
+def test_plot_HG_fit_other_column_names(
+    carbognani2019, fig_test, fig_ref, idc, alphac, magc
+):
+    pdf = pyedra.HG_fit(carbognani2019)
+
+    exp_ax = fig_ref.subplots()
+    pdf.plot(df=carbognani2019, ax=exp_ax)
+
+    carbognani2019.columns = [idc, alphac, magc]
+    test_ax = fig_test.subplots()
+    pdf.plot(df=carbognani2019, idc=idc, alphac=alphac, magc=magc, ax=test_ax)
+    test_ax.set_ylabel("V")
 
 
 @check_figures_equal()

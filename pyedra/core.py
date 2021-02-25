@@ -161,9 +161,9 @@ class BasePlot(abc.ABC):
 
         return method(**kwargs)
 
-    def __getattr__(self, kind):
+    def __getattr__(self, y):
         """getattr(x, y) <==> x.__getattr__(y) <==> getattr(x, y)."""
-        return getattr(self.pdf.model_df.plot, kind)
+        return getattr(self.pdf.model_df.plot, y)
 
 
 # ============================================================================
@@ -171,7 +171,7 @@ class BasePlot(abc.ABC):
 # ============================================================================
 
 
-def obs_counter(df, obs):
+def obs_counter(df, obs, idc="id", alphac="alpha"):
     """Count the observations. A minimum is needed to the fits.
 
     Parameters
@@ -180,9 +180,14 @@ def obs_counter(df, obs):
         The dataframe must contain 3 columns as indicated here:
         id (mpc number of the asteroid), alpha (phase angle) and
         v (reduced magnitude in Johnson's V filter).
-
-    obs: int
+    obs: ``int``
         Minimum number of observations needed to perform the fit.
+    idc: ``str``
+        Column with the mpc number of the asteroids.
+    alphac : ``str``
+        Column with the phase angle of the asteroids.
+
+
 
     Return
     ------
@@ -190,6 +195,6 @@ def obs_counter(df, obs):
         Numpy array containing the asteroids whose number of
         observations is less than obs.
     """
-    df_cnt = df.groupby("id").count()
-    lt_idx = df_cnt[df_cnt.alpha < obs].index
+    df_cnt = df.groupby(idc).count()
+    lt_idx = df_cnt[df_cnt[alphac] < obs].index
     return lt_idx.to_numpy()
