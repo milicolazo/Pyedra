@@ -78,12 +78,22 @@ def test_Shev_fit(carbognani2019):
                 5: 0.045,
                 6: 0.04,
             },
+            "observations": {
+                0: 7,
+                1: 7,
+                2: 8,
+                3: 7,
+                4: 6,
+                5: 5,
+                6: 7,
+            },
         }
     )
 
     for idx, e_row in expected.iterrows():
         r_row = result[result.id == e_row.id].iloc[0]
         np.testing.assert_array_equal(r_row.id, e_row.id)
+        np.testing.assert_array_equal(r_row.observations, e_row.observations)
         np.testing.assert_allclose(
             r_row.V_lin, e_row.V_lin, atol=r_row.error_V_lin
         )

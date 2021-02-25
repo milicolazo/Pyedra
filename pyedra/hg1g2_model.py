@@ -182,8 +182,9 @@ def HG1G2_fit(df):
     ----------
     df: ``pandas.DataFrame``
         The dataframe must contain 3 columns as indicated here:
-        id (mpc number of the asteroid), alpha (phase angle) and
-        v (reduced magnitude in Johnson's V filter).
+        id (mpc number of the asteroid), alpha (phase angle),
+        v (reduced magnitude in Johnson's V filter) and observations
+        (number of observation of the given asteroid).
 
     Returns
     -------
@@ -218,6 +219,7 @@ def HG1G2_fit(df):
     G_2_column = np.empty(size)
     error_G_2_column = np.empty(size)
     R_column = np.empty(size)
+    observations = np.empty(size, dtype=int)
 
     penttila2016 = datasets.load_penttila2016()
 
@@ -285,6 +287,7 @@ def HG1G2_fit(df):
         G_2_column[idx] = G_2
         error_G_2_column[idx] = error_G_2
         R_column[idx] = r_squared
+        observations[idx] = len(data)
 
     model_df = pd.DataFrame(
         {
@@ -296,6 +299,7 @@ def HG1G2_fit(df):
             "G2": G_2_column,
             "error_G2": error_G_2_column,
             "R": R_column,
+            "observations": observations,
         }
     )
 

@@ -169,8 +169,9 @@ def Shev_fit(df):
     ----------
     df: ``pandas.DataFrame``
         The dataframe must contain 3 columns as indicated here:
-        id (mpc number of the asteroid), alpha (phase angle) and
-        v (reduced magnitude in Johnson's V filter).
+        id (mpc number of the asteroid), alpha (phase angle),
+        v (reduced magnitude in Johnson's V filter) and observations
+        (number of observation of the given asteroid).
 
     Returns
     -------
@@ -212,6 +213,7 @@ def Shev_fit(df):
     c_column = np.empty(size)
     error_c_column = np.empty(size)
     R_column = np.empty(size)
+    observations = np.empty(size, dtype=int)
 
     for idx, id in enumerate(noob.id):
 
@@ -238,6 +240,7 @@ def Shev_fit(df):
         c_column[idx] = c
         error_c_column[idx] = error_c
         R_column[idx] = r_squared
+        observations[idx] = len(data)
 
     model_df = pd.DataFrame(
         {
@@ -249,6 +252,7 @@ def Shev_fit(df):
             "c": c_column,
             "error_c": error_c_column,
             "R": R_column,
+            "observations": observations,
         }
     )
 
