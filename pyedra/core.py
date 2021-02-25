@@ -177,17 +177,13 @@ def obs_counter(df, obs, idc="id", alphac="alpha"):
     Parameters
     ----------
     df: ``pandas.DataFrame``
-        The dataframe must contain 3 columns as indicated here:
-        id (mpc number of the asteroid), alpha (phase angle) and
-        v (reduced magnitude in Johnson's V filter).
+        The dataframe must with the values
+    idc : ``str``, optional (default=id)
+        Column with the mpc number of the asteroids.
+    alphac : ``str``, optional (default=alpha)
+        Column with the phase angle of the asteroids.
     obs: ``int``
         Minimum number of observations needed to perform the fit.
-    idc: ``str``
-        Column with the mpc number of the asteroids.
-    alphac : ``str``
-        Column with the phase angle of the asteroids.
-
-
 
     Return
     ------

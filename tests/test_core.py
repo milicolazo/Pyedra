@@ -109,9 +109,17 @@ def test_metadata():
 
 
 def test_obs_counter(carbognani2019):
-
     result = pyedra.obs_counter(carbognani2019, 8)
-
     expected = [85, 208, 306, 313, 338, 522]
-
     np.testing.assert_array_almost_equal(result, expected, 6)
+
+
+@pytest.mark.parametrize("idc", ["id", "num"])
+@pytest.mark.parametrize("alphac", ["alpha", "alph"])
+def test_obs_counter_other_column_names(carbognani2019, idc, alphac):
+    expected = pyedra.obs_counter(carbognani2019, 8)
+
+    carbognani2019.columns = [idc, alphac, "xx"]
+    result = pyedra.obs_counter(carbognani2019, 8, idc=idc, alphac=alphac)
+
+    np.testing.assert_array_equal(result, expected)
