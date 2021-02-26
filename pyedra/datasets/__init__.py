@@ -38,7 +38,7 @@ PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 
 
 def load_carbognani2019():
-    """Input for testing the phase functions.
+    """Input for use with the phase functions.
 
     This dataset contains the first and second columns of Table 2 of
     [6]_ . These columns correspond to: phase angle
@@ -75,6 +75,6 @@ def load_penttila2016():
 
 
 def load_gaia():
-    """[summary]"""
+    """Gaia observations."""
     path = PATH / "gaia.csv.bz2"
     return pd.read_csv(path, na_filter=False, compression="bz2")
