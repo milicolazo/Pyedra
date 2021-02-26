@@ -194,3 +194,74 @@ def obs_counter(df, obs, idc="id", alphac="alpha"):
     df_cnt = df.groupby(idc).count()
     lt_idx = df_cnt[df_cnt[alphac] < obs].index
     return lt_idx.to_numpy()
+
+
+def merge_obs(
+    obs_a,
+    obs_b,
+    idc_a="id",
+    idc_b="id",
+    alphac_a="alpha",
+    alphac_b="alpha",
+    magc_a="v",
+    magc_b="v",
+    **kwargs,
+):
+    """Merge two dataframes with observations.
+
+    La funcion toma dos dataframe (``obs_a`` y ``obs_b``) y los
+    concatena; y asume que las columnas ``idc_a``, ``alphac_a``
+    y ``magc_a`` de ``obs_a``, son equivalentes ``idc_b``, ``alphac_b`` y
+    ``magc_b`` de un dataframe ``obs_b``.  El dataframe resultante
+    utiliza los nombres de ``obs_a`` para esas tres columnas y las ubica al
+    comienzo, y todas las demas columnas de ambos dataframes son combinadas
+    con la misma lógica de ``pandas.concat``.
+
+    Parameters
+    ----------
+    obs_a: ``pandas.DataFrame``
+        The dataframe must with the observations.
+    obs_b: ``pandas.DataFrame``
+        The dataframe must with the observations to be concatenated
+        to ``obs_a``.
+    idc_a : ``str``, optional (default=id)
+        Column with the mpc number of the asteroids of the ``obs_a`` dataframe.
+    idc_b : ``str``, optional (default=id)
+        Column with the mpc number of the asteroids of the ``obs_b`` dataframe.
+    alphac_a : ``str``, optional (default=alpha)
+        Column with the phase angle of the asteroids of the ``obs_a``
+        dataframe.
+    alphac_b : ``str``, optional (default=alpha)
+        Column with the phase angle of the asteroids of the ``obs_b``
+        dataframe.
+    magc_a : ``str``, optional (default=v)
+        Column with the magnitude of the ``obs_a`` dataframe.
+        The default 'v' value is reference to the reduced magnitude in
+        Johnson's V filter.
+    magc_b : ``str``, optional (default=v)
+        Column with the magnitude of the ``obs_b`` dataframe.
+        The default 'v' value is reference to the reduced magnitude in
+        Johnson's V filter.
+    kwargs: ``dict`` or ``None`` (optional)
+        The parameters to send to the subjacent ``pandas.concat`` function.
+
+    Return
+    ------
+    ``pd.DataFrame`` :
+        Merged dataframes.
+
+    """
+    # set the order of the first 3 columns of the obs_a and the merged df
+    columns_a = [idc_a, alphac_a, magc_a] + [
+        c for c in obs_a.columns if c not in [idc_a, alphac_a, magc_a]
+    ]
+    obs_a = obs_a[columns_a]
+
+    # rename the columns of obs_b according to obs_a names
+    obs_b = obs_b.copy()
+
+    map_b_col_names = {idc_b: idc_a, alphac_b: alphac_a, magc_b: magc_a}
+    columns_b = [map_b_col_names.get(c, c) for c in obs_b.columns]
+    obs_b.columns = columns_b
+
+    return pd.concat([obs_a, obs_b], **kwargs)
