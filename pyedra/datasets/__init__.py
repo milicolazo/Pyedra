@@ -75,6 +75,14 @@ def load_penttila2016():
 
 
 def load_gaia():
-    """Gaia observations."""
+    """Gaia observations.
+
+    The data used to obtain these quantities were downloaded from the Gaia
+    Archive (https://gea.esac.esa.int/archive/) [8]_ .
+
+    References
+    ----------
+    .. [8] Gaia Collaboration et al., 2018, A&A, 616, A13
+    """
     path = PATH / "gaia.csv.bz2"
     return pd.read_csv(path, na_filter=False, compression="bz2")
