@@ -131,8 +131,9 @@ def test_obs_counter_other_column_names(carbognani2019, idc, alphac):
 @pytest.mark.parametrize("alphac_b", ["alpha", "alph"])
 @pytest.mark.parametrize("magc_a", ["v", "i"])
 @pytest.mark.parametrize("magc_b", ["v", "i"])
-@pytest.mark.parametrize("extrac_a", [0, 3, 5])
-@pytest.mark.parametrize("extrac_b", [0, 3, 5])
+@pytest.mark.parametrize("extrac_a", [0, 5])
+@pytest.mark.parametrize("extrac_b", [0, 5])
+@pytest.mark.parametrize("extra_obs_b", [0, 10])
 def test_obs_merge(
     carbognani2019,
     idc_a,
@@ -143,6 +144,7 @@ def test_obs_merge(
     magc_b,
     extrac_a,
     extrac_b,
+    extra_obs_b,
 ):
     obs_a = carbognani2019
 
@@ -160,6 +162,14 @@ def test_obs_merge(
     for oid, new_obs in obs_b_count.items():
         for _ in range(new_obs):
             rows.append({idc_b: oid, alphac_b: -100, magc_b: -100})
+
+    # agregamos filas con id sin sentido que no tienen que llegar al final
+    max_id = np.max(obs_a[idc_a].unique())
+    for idx in range(extra_obs_b):
+        oid = max_id + idx + 1
+        rows.append({idc_b: oid, alphac_b: -100, magc_b: -100})
+
+    # creamos el dataframe
     obs_b = pd.DataFrame(rows)
 
     # add the extra columns
@@ -188,3 +198,5 @@ def test_obs_merge(
 
     expected_cols = [idc_a, alphac_a, magc_a] + list(extrac_a) + list(extrac_b)
     np.testing.assert_array_equal(merged.columns, expected_cols)
+
+    assert sorted(merged[idc_a].unique()) == sorted(obs_a[idc_a].unique())

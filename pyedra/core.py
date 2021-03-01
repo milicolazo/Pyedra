@@ -209,10 +209,13 @@ def merge_obs(
 ):
     """Merge two dataframes with observations.
 
+    Sources whose id is not present in `obs_a` are discarded.
+
     The function concantenates two dataframes (``obs_a`` and ``obs_b``), and
     assumes that the columns ``idc_a``, ``alphac_a`` and ``magc_a`` from
     ``obs_a`` are equivalent to ``idc_b``, ``alphac_b`` and ``magc_b``
-    from a dataframe ``obs_b``.  The resulting dataframe uses the names of
+    from a dataframe ``obs_b``.
+    The resulting dataframe uses the names of
     ``obs_a`` for those three columns and places them at the start, and all
     other columns of both dataframes combined with the same behavior of
     ``pandas.concat``.
@@ -257,11 +260,18 @@ def merge_obs(
     ]
     obs_a = obs_a[columns_a]
 
-    # rename the columns of obs_b according to obs_a names
-    obs_b = obs_b.copy()
+    # retrieve only tne ids of the first datasets from the secondone
+    ids = obs_a[idc_a].unique()
+    obs_b = obs_b[obs_b[idc_b].isin(ids)].copy()
 
+    # rename the columns of obs_b according to obs_a names
     map_b_col_names = {idc_b: idc_a, alphac_b: alphac_a, magc_b: magc_a}
     columns_b = [map_b_col_names.get(c, c) for c in obs_b.columns]
     obs_b.columns = columns_b
 
-    return pd.concat([obs_a, obs_b], **kwargs)
+    # set the default configuration of pd.concat
+    kwargs.setdefault("ignore_index", True)
+
+    # merge and return
+    merged = pd.concat([obs_a, obs_b], **kwargs)
+    return merged
