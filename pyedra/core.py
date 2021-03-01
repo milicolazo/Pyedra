@@ -209,13 +209,13 @@ def merge_obs(
 ):
     """Merge two dataframes with observations.
 
-    La funcion toma dos dataframe (``obs_a`` y ``obs_b``) y los
-    concatena; y asume que las columnas ``idc_a``, ``alphac_a``
-    y ``magc_a`` de ``obs_a``, son equivalentes ``idc_b``, ``alphac_b`` y
-    ``magc_b`` de un dataframe ``obs_b``.  El dataframe resultante
-    utiliza los nombres de ``obs_a`` para esas tres columnas y las ubica al
-    comienzo, y todas las demas columnas de ambos dataframes son combinadas
-    con la misma lógica de ``pandas.concat``.
+    The function concantenates two dataframes (``obs_a`` and ``obs_b``), and
+    assumes that the columns ``idc_a``, ``alphac_a`` and ``magc_a`` from
+    ``obs_a`` are equivalent to ``idc_b``, ``alphac_b`` and ``magc_b``
+    from a dataframe ``obs_b``.  The resulting dataframe uses the names of
+    ``obs_a`` for those three columns and places them at the start, and all
+    other columns of both dataframes combined with the same behavior of
+    ``pandas.concat``.
 
     Parameters
     ----------
