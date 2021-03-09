@@ -2,9 +2,14 @@
 ![logo](https://raw.githubusercontent.com/milicolazo/Pyedra/master/res/logo.png)
 
 [![Build Status](https://travis-ci.com/milicolazo/Pyedra.svg?branch=master)](https://travis-ci.com/milicolazo/Pyedra)
+[![Build Status](https://github.com/milicolazo/Pyedra/actions/workflows/pyedra_ci.yml/badge.svg?branch=master)](https://github.com/milicolazo/Pyedra/actions/workflows/pyedra_ci.yml)
 [![Documentation Status](https://readthedocs.org/projects/pyedra/badge/?version=latest)](https://pyedra.readthedocs.io/en/latest/?badge=latest)
 [![PyPI](https://img.shields.io/pypi/v/Pyedra)](https://pypi.org/project/Pyedra/)
 [![https://github.com/leliel12/diseno_sci_sfw](https://img.shields.io/badge/DiSoftCompCi-FAMAF-ffda00)](https://github.com/leliel12/diseno_sci_sfw)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://badge.fury.io/py/uttrs)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
+
+
 
 **Pyedra** is a python library that allows you to fit three different models of asteroid phase functions to your observations.
 
@@ -30,7 +35,7 @@ In addition, the input data can be plotted with the chosen fit.
 --------------------------------------------------------------------------------
 
 ## Requirements
-You need Python 3.8 to run Pyedra.
+You need Python 3.8+ to run Pyedra.
 
 ## Installation
 Clone this repo and then inside the local directory execute
