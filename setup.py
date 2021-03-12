@@ -78,4 +78,5 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Topic :: Scientific/Engineering",
     ],
+    include_package_data=True,
 )

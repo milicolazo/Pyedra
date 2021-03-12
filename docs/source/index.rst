@@ -12,17 +12,23 @@ Pyedra's documentation
         :align: center
         :scale: 100 %
 
-.. image:: https://travis-ci.com/milicolazo/Pyedra.svg?branch=master
-    :target: https://travis-ci.com/milicolazo/Pyedra
-    :alt: Build Status
+|Build Status| |image1| |Documentation Status| |PyPI|
+|https://github.com/leliel12/diseno_sci_sfw| |Python 3.8+| |License|
 
-.. image:: https://readthedocs.org/projects/pyedra/badge/?version=latest
-    :target: https://pyedra.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
-
-.. image:: https://img.shields.io/badge/DiSoftCompCi-FAMAF-ffda00
+.. |Build Status| image:: https://travis-ci.com/milicolazo/Pyedra.svg?branch=master
+   :target: https://travis-ci.com/milicolazo/Pyedra
+.. |image1| image:: https://github.com/milicolazo/Pyedra/actions/workflows/pyedra_ci.yml/badge.svg?branch=master
+   :target: https://github.com/milicolazo/Pyedra/actions/workflows/pyedra_ci.yml
+.. |Documentation Status| image:: https://readthedocs.org/projects/pyedra/badge/?version=latest
+   :target: https://pyedra.readthedocs.io/en/latest/?badge=latest
+.. |PyPI| image:: https://img.shields.io/pypi/v/Pyedra
+   :target: https://pypi.org/project/Pyedra/
+.. |https://github.com/leliel12/diseno_sci_sfw| image:: https://img.shields.io/badge/DiSoftCompCi-FAMAF-ffda00
    :target: https://github.com/leliel12/diseno_sci_sfw
-   :alt: Curso doctoral FAMAF: Diseño de software para cómputo científico
+.. |Python 3.8+| image:: https://img.shields.io/badge/python-3.8+-blue.svg
+   :target: https://badge.fury.io/py/uttrs
+.. |License| image:: https://img.shields.io/badge/License-MIT-blue.svg
+   :target: https://tldrlegal.com/license/mit-license
 
 
 **Pyedra** is a python library that allows you to fit three different models of asteroid phase functions to your observations.
