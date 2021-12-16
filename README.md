@@ -1,5 +1,5 @@
 # Pyedra
-![logo](https://raw.githubusercontent.com/milicolazo/Pyedra/master/res/logo.png)
+![logo](https://raw.githubusercontent.com/milicolazo/Pyedra/master/res/logo_bw.png)
 
 [![Build Status](https://travis-ci.com/milicolazo/Pyedra.svg?branch=master)](https://travis-ci.com/milicolazo/Pyedra)
 [![Build Status](https://github.com/milicolazo/Pyedra/actions/workflows/pyedra_ci.yml/badge.svg?branch=master)](https://github.com/milicolazo/Pyedra/actions/workflows/pyedra_ci.yml)
@@ -25,7 +25,7 @@ The input file must be a .csv file with three columns: id (mpc number), alpha (p
 Pyedra currently has three functions, each of which adjusts a different phase function model.
 The modules are:
 
-- **HG_fit**: adjusts the H-G biparametric function to the data set. 
+- **HG_fit**: adjusts the H-G biparametric function to the data set.
 
 - **Shev_fit**: adjusts the Shevchenko triparametric function to the data set.
 
