@@ -1,7 +1,6 @@
 # Pyedra
 ![logo](https://raw.githubusercontent.com/milicolazo/Pyedra/master/res/logo_bw.png)
 
-[![Build Status](https://travis-ci.com/milicolazo/Pyedra.svg?branch=master)](https://travis-ci.com/milicolazo/Pyedra)
 [![Build Status](https://github.com/milicolazo/Pyedra/actions/workflows/pyedra_ci.yml/badge.svg?branch=master)](https://github.com/milicolazo/Pyedra/actions/workflows/pyedra_ci.yml)
 [![Documentation Status](https://readthedocs.org/projects/pyedra/badge/?version=latest)](https://pyedra.readthedocs.io/en/latest/?badge=latest)
 [![PyPI](https://img.shields.io/pypi/v/Pyedra)](https://pypi.org/project/Pyedra/)
