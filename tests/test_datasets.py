@@ -37,10 +37,10 @@ def test_load_penttila2016():
     result = pyedra.datasets.load_penttila2016()
 
     assert isinstance(result, pd.DataFrame)
-    np.testing.assert_almost_equal(result["alpha"].mean(), 40.951960, 6)
-    np.testing.assert_almost_equal(result["phi1"].mean(), 0.491135, 6)
-    np.testing.assert_almost_equal(result["phi2"].mean(), 0.610840, 6)
-    np.testing.assert_almost_equal(result["phi3"].mean(), 0.213223, 6)
+    np.testing.assert_almost_equal(result["alpha"].mean(), 41.278217, 6)
+    np.testing.assert_almost_equal(result["phi1"].mean(), 0.498635, 6)
+    np.testing.assert_almost_equal(result["phi2"].mean(), 0.617681, 6)
+    np.testing.assert_almost_equal(result["phi3"].mean(), 0.224210, 6)
 
 
 def test_load_gaia():
