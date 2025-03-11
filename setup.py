@@ -32,13 +32,12 @@ from setuptools import setup  # noqa
 
 PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 
-
 REQUIREMENTS = [
-    "numpy>=1.24.0,<2.0",   # Allows any numpy version between 1.24.0 and 2.0
-    "pandas>=2.0.0,<3.0",   # Allows any pandas version between 2.0.0 and 3.0
-    "scipy>=1.10.0,<2.0",   # Allows any scipy version between 1.10.0 and 2.0
-    "attrs>=25.0.0",        # Installs version 25.0.0 or greater
-    "matplotlib>=3.7.0,<4.0"  # Allows any matplotlib version between 3.7.0 and 4.0
+    "numpy>=1.24.0,<2.0",
+    "pandas>=2.0.0,<3.0",
+    "scipy>=1.10.0,<2.0",
+    "attrs>=25.0.0",
+    "matplotlib>=3.7.0,<4.0",
 ]
 
 with open(PATH / "pyedra" / "__init__.py") as fp:

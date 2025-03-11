@@ -241,7 +241,7 @@ def Shev_fit(df, idc="id", alphac="alpha", magc="v"):
         error_V_lin, error_b, error_c = np.sqrt(np.diag(cov))
 
         residuals = V_list - _Shev_model(alpha_list, *op)
-        ss_res = np.sum(residuals ** 2)
+        ss_res = np.sum(residuals**2)
         ss_tot = np.sum((V_list - np.mean(V_list)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
 

@@ -274,7 +274,7 @@ def HG1G2_fit(df, idc="id", alphac="alpha", magc="v"):
         H_1_2 = -2.5 * np.log10(a + b + c)
         error_H_1_2 = (
             1.0857362
-            * np.sqrt(error_a ** 2 + error_b ** 2 + error_c ** 2)
+            * np.sqrt(error_a**2 + error_b**2 + error_c**2)
             / (a + b + c)
         )
         G_1 = a / (a + b + c)
@@ -287,7 +287,7 @@ def HG1G2_fit(df, idc="id", alphac="alpha", magc="v"):
         ) / ((a + b + c) ** 2)
 
         residuals = v_fit - _HG1G2_model((fi1, fi2, fi3), *op)
-        ss_res = np.sum(residuals ** 2)
+        ss_res = np.sum(residuals**2)
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
 

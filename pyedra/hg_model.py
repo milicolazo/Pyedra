@@ -241,14 +241,14 @@ def HG_fit(df, idc="id", alphac="alpha", magc="v"):
         error_a, error_b = np.sqrt(np.diag(cov))
 
         H = -2.5 * np.log10(a + b)
-        error_H = 1.0857362 * np.sqrt(error_a ** 2 + error_b ** 2) / (a + b)
+        error_H = 1.0857362 * np.sqrt(error_a**2 + error_b**2) / (a + b)
         G = b / (a + b)
         error_G = np.sqrt((b * error_a) ** 2 + (a * error_b) ** 2) / (
             (a + b) ** 2
         )
 
         residuals = v_fit - _HGmodel(alpha_fit, *op)
-        ss_res = np.sum(residuals ** 2)
+        ss_res = np.sum(residuals**2)
         ss_tot = np.sum((v_fit - np.mean(v_fit)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
 
